@@ -222,8 +222,8 @@ const initPageData = () => {
   
   // 获取API配置信息
   apiMode.value = getApiMode()
-  apiBaseUrl.value = import.meta.env.VITE_API_BASE_URL || '未配置'
-  nodeEnv.value = import.meta.env.VITE_NODE_ENV || 'development'
+  apiBaseUrl.value = import.meta.env['VITE_API_BASE_URL'] || '未配置'
+  nodeEnv.value = import.meta.env['VITE_NODE_ENV'] || 'development'
 }
 
 /**

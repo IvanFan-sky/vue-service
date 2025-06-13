@@ -8,7 +8,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/Login.vue'),
+    component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
     meta: { 
       title: '登录',
       requireAuth: false,
@@ -19,7 +19,7 @@ const routes: RouteRecordRaw[] = [
     path: '/',
     name: 'Home',
     redirect: '/dashboard',
-    component: () => import('@/components/Layout/BasicLayout.vue'),
+    component: () => import(/* webpackChunkName: "layout" */ '@/components/Layout/BasicLayout.vue'),
     meta: { 
       title: '首页',
       requireAuth: true 
@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: '/dashboard',
         name: 'Dashboard',
-        component: () => import('@/views/Dashboard.vue'),
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
         meta: { 
           title: '仪表盘',
           icon: 'Dashboard',
@@ -38,7 +38,7 @@ const routes: RouteRecordRaw[] = [
         {
           path: '/user/list',
           name: 'UserManagement',
-          component: () => import('@/views/UserManagement.vue'),
+          component: () => import(/* webpackChunkName: "user-management" */ '@/views/UserManagement.vue'),
           meta: { 
             title: '用户列表',
             icon: 'UserFilled',
@@ -54,7 +54,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('@/views/404.vue'),
+    component: () => import(/* webpackChunkName: "error" */ '@/views/404.vue'),
     meta: { 
       title: '页面不存在',
       hidden: true 
@@ -80,12 +80,12 @@ router.beforeEach(async (to, _from, next) => {
   const authStore = useAuthStore()
   
   // 设置页面标题
-  if (to.meta?.title) {
-    document.title = `${to.meta.title} - Vue Service`
+  if (to.meta?.['title']) {
+    document.title = `${to.meta['title']} - Vue Service`
   }
 
   // 如果页面需要认证
-  if (to.meta?.requireAuth) {
+  if (to.meta?.['requireAuth']) {
     if (!authStore.token) {
       // 未登录，跳转到登录页
       next({

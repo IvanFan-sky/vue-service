@@ -10,6 +10,7 @@ import axios, { type AxiosResponse, AxiosError, type AxiosRequestConfig } from '
 import { ElMessage } from 'element-plus'
 import type { ApiResponse } from '@/types'
 import { API_CONFIG, STORAGE_KEYS, HTTP_STATUS } from '@/constants'
+import { getTokenManager } from './tokenManager'
 
 /**
  * 创建axios实例
@@ -26,13 +27,19 @@ const request = axios.create({
  * @description 在请求发送前添加认证token、请求日志等
  */
 request.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // 添加认证token
-    const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN)
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+    try {
+      const tokenManager = getTokenManager()
+      const token = await tokenManager.getValidToken()
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+    } catch (error) {
+      // Token获取失败，可能需要重新登录
+      console.warn('获取Token失败:', error)
     }
-    
+
     // 开发环境下打印请求信息
     if (import.meta.env.DEV) {
       console.log('🚀 请求发送:', {
@@ -42,7 +49,7 @@ request.interceptors.request.use(
         data: config.data
       })
     }
-    
+
     return config
   },
   (error: AxiosError) => {

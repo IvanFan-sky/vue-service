@@ -13,7 +13,7 @@ import type { LoginForm, User, ApiResponse } from '@/types'
 /**
  * 是否使用模拟数据
  */
-const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+const USE_MOCK = import.meta.env['VITE_USE_MOCK'] === 'true'
 
 /**
  * 真实API接口
@@ -116,6 +116,6 @@ export const getApiMode = (): 'mock' | 'real' => {
  */
 if (import.meta.env.DEV) {
   console.log(`🔧 认证API模式: ${getApiMode()}`)
-  console.log(`🌐 API基础URL: ${import.meta.env.VITE_API_BASE_URL}`)
+  console.log(`🌐 API基础URL: ${import.meta.env['VITE_API_BASE_URL']}`)
   console.log(`🎭 使用模拟数据: ${USE_MOCK}`)
 } 

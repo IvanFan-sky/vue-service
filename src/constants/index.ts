@@ -11,7 +11,7 @@
  */
 export const API_CONFIG = {
   /** API基础URL */
-  BASE_URL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
+  BASE_URL: import.meta.env['VITE_API_BASE_URL'] || 'http://localhost:3000',
   /** 请求超时时间（毫秒） */
   TIMEOUT: 10000,
   /** 重试次数 */

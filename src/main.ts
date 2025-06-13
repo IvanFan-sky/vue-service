@@ -30,12 +30,10 @@ import { useTheme } from './composables/useTheme'
 // 导入认证状态管理
 import { useAuthStore } from './stores/auth'
 
-// 导入国际化系统
-import { useI18n } from './composables/useI18n'
 
-// 导入Element Plus中文语言包
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import en from 'element-plus/es/locale/lang/en'
+
+// 导入全局指令
+import setupDirectives from './directives'
 
 /**
  * 创建Vue应用实例
@@ -59,23 +57,11 @@ app.use(ElementPlus)
 const pinia = createPinia()
 app.use(pinia)
 
-/**
- * 初始化国际化系统
- */
-const { currentLanguage } = useI18n()
-
-// 根据当前语言配置Element Plus
-const elementPlusLocale = currentLanguage.value === 'zh-cn' ? zhCn : en
-
-// 配置Element Plus
-app.use(ElementPlus, {
-  locale: elementPlusLocale,
-  size: 'default',
-  zIndex: 3000
-})
-
 // Vue Router路由
 app.use(router)
+
+// 注册全局指令
+setupDirectives(app)
 
 /**
  * 初始化主题系统
@@ -88,7 +74,7 @@ initTheme()
  */
 // 需要在Pinia安装后初始化认证状态
 const initAuth = () => {
-  const authStore = useAuthStore()
+  useAuthStore()
   // authStore会自动从localStorage恢复用户信息
 }
 
@@ -104,5 +90,5 @@ app.mount('#app')
 if (import.meta.env.DEV) {
   console.log('🚀 Vue应用已启动')
   console.log('📦 当前环境:', import.meta.env.MODE)
-  console.log('🔗 API地址:', import.meta.env.VITE_API_BASE_URL)
+  console.log('🔗 API地址:', import.meta.env['VITE_API_BASE_URL'])
 }

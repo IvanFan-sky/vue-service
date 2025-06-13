@@ -194,7 +194,7 @@ const availableLanguages = getAvailableLanguages()
  */
 const breadcrumbs = computed(() => {
   const { path } = route
-  const breadcrumbList = []
+  const breadcrumbList: Array<{ path: string; title: string; icon: string }> = []
   
   // 添加首页
   breadcrumbList.push({
