@@ -1,0 +1,45 @@
+{
+  "name": "vue-service",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Vue3 + TypeScript 前端项目",
+  "author": "开发团队",
+  "scripts": {
+    "dev": "vite --mode development",
+    "mock": "vite --mode mock",
+    "build": "vue-tsc -b && vite build",
+    "build:dev": "vue-tsc -b && vite build --mode development",
+    "build:mock": "vue-tsc -b && vite build --mode mock",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "format": "prettier --write src/",
+    "type-check": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "axios": "^1.7.0",
+    "element-plus": "^2.10.1",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^9.8.0",
+    "@types/node": "^22.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vue/eslint-config-prettier": "^10.0.0",
+    "@vue/eslint-config-typescript": "^14.0.0",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-vue": "^9.0.0",
+    "prettier": "^3.0.0",
+    "sass": "^1.80.0",
+    "terser": "^5.42.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5",
+    "vue-tsc": "^2.2.8"
+  }
+}

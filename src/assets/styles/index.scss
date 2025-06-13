@@ -1,0 +1,606 @@
+/**
+ * 主样式文件
+ * @description 项目的全局样式定义
+ * @author 开发团队
+ * @date 2024-12-12
+ * @version 1.0.0
+ */
+
+// 导入变量和混入
+@import './variables.scss';
+@import './mixins.scss';
+
+// 重置样式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-color-primary;
+  background-color: $background-color-base;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// 应用根容器
+#app {
+  height: 100%;
+  min-height: 100vh;
+}
+
+// 链接样式
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: color $transition-duration;
+  
+  &:hover {
+    color: $color-primary-light;
+  }
+  
+  &:active {
+    color: $color-primary-dark;
+  }
+}
+
+// 按钮基础样式
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid transparent;
+  border-radius: $border-radius-base;
+  font-size: $font-size-base;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: all $transition-duration;
+  user-select: none;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  // 按钮尺寸
+  &--small {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-sm;
+  }
+  
+  &--large {
+    padding: $spacing-md $spacing-lg;
+    font-size: $font-size-lg;
+  }
+  
+  // 按钮类型
+  &--primary {
+    color: $color-white;
+    background-color: $color-primary;
+    border-color: $color-primary;
+    
+    &:hover {
+      background-color: $color-primary-light;
+      border-color: $color-primary-light;
+    }
+    
+    &:active {
+      background-color: $color-primary-dark;
+      border-color: $color-primary-dark;
+    }
+  }
+  
+  &--secondary {
+    color: $color-primary;
+    background-color: transparent;
+    border-color: $color-primary;
+    
+    &:hover {
+      color: $color-white;
+      background-color: $color-primary;
+    }
+  }
+  
+  &--danger {
+    color: $color-white;
+    background-color: $color-danger;
+    border-color: $color-danger;
+    
+    &:hover {
+      background-color: $color-danger-light;
+      border-color: $color-danger-light;
+    }
+  }
+}
+
+// 表单样式
+.form {
+  &__item {
+    margin-bottom: $spacing-md;
+  }
+  
+  &__label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-weight: 500;
+    color: $text-color-primary;
+  }
+  
+  &__input {
+    width: 100%;
+    padding: $spacing-sm;
+    border: 1px solid $border-color-base;
+    border-radius: $border-radius-base;
+    font-size: $font-size-base;
+    transition: border-color $transition-duration;
+    
+    &:focus {
+      outline: none;
+      border-color: $color-primary;
+      box-shadow: 0 0 0 2px rgba($color-primary, 0.2);
+    }
+    
+    &::placeholder {
+      color: $text-color-placeholder;
+    }
+    
+    &:disabled {
+      background-color: $background-color-disabled;
+      cursor: not-allowed;
+    }
+  }
+  
+  &__error {
+    margin-top: $spacing-xs;
+    font-size: $font-size-sm;
+    color: $color-danger;
+  }
+}
+
+// 卡片样式
+.card {
+  background-color: $color-white;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-base;
+  overflow: hidden;
+  
+  &__header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid $border-color-light;
+    
+    &-title {
+      margin: 0;
+      font-size: $font-size-lg;
+      font-weight: 600;
+      color: $text-color-primary;
+    }
+  }
+  
+  &__body {
+    padding: $spacing-lg;
+  }
+  
+  &__footer {
+    padding: $spacing-lg;
+    border-top: 1px solid $border-color-light;
+    background-color: $background-color-light;
+  }
+}
+
+// 表格样式
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-white;
+  
+  &__header {
+    background-color: $background-color-light;
+  }
+  
+  &__cell {
+    padding: $spacing-sm $spacing-md;
+    border-bottom: 1px solid $border-color-light;
+    text-align: left;
+    
+    &--center {
+      text-align: center;
+    }
+    
+    &--right {
+      text-align: right;
+    }
+  }
+  
+  &__row {
+    transition: background-color $transition-duration;
+    
+    &:hover {
+      background-color: $background-color-hover;
+    }
+    
+    &--selected {
+      background-color: rgba($color-primary, 0.1);
+    }
+  }
+}
+
+// 加载状态
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  
+  &__spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid $border-color-light;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  &__text {
+    margin-left: $spacing-sm;
+    color: $text-color-secondary;
+  }
+}
+
+// 空状态
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  text-align: center;
+  
+  &__icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: $spacing-md;
+    opacity: 0.5;
+  }
+  
+  &__text {
+    color: $text-color-secondary;
+    font-size: $font-size-lg;
+  }
+  
+  &__description {
+    margin-top: $spacing-xs;
+    color: $text-color-placeholder;
+    font-size: $font-size-sm;
+  }
+}
+
+// 工具类
+.text {
+  &--primary {
+    color: $text-color-primary !important;
+  }
+  
+  &--secondary {
+    color: $text-color-secondary !important;
+  }
+  
+  &--placeholder {
+    color: $text-color-placeholder !important;
+  }
+  
+  &--success {
+    color: $color-success !important;
+  }
+  
+  &--warning {
+    color: $color-warning !important;
+  }
+  
+  &--danger {
+    color: $color-danger !important;
+  }
+  
+  &--center {
+    text-align: center !important;
+  }
+  
+  &--left {
+    text-align: left !important;
+  }
+  
+  &--right {
+    text-align: right !important;
+  }
+}
+
+.bg {
+  &--primary {
+    background-color: $color-primary !important;
+  }
+  
+  &--success {
+    background-color: $color-success !important;
+  }
+  
+  &--warning {
+    background-color: $color-warning !important;
+  }
+  
+  &--danger {
+    background-color: $color-danger !important;
+  }
+}
+
+// 间距工具类
+@each $size, $value in $spacing-map {
+  .m-#{$size} {
+    margin: $value !important;
+  }
+  
+  .mt-#{$size} {
+    margin-top: $value !important;
+  }
+  
+  .mr-#{$size} {
+    margin-right: $value !important;
+  }
+  
+  .mb-#{$size} {
+    margin-bottom: $value !important;
+  }
+  
+  .ml-#{$size} {
+    margin-left: $value !important;
+  }
+  
+  .p-#{$size} {
+    padding: $value !important;
+  }
+  
+  .pt-#{$size} {
+    padding-top: $value !important;
+  }
+  
+  .pr-#{$size} {
+    padding-right: $value !important;
+  }
+  
+  .pb-#{$size} {
+    padding-bottom: $value !important;
+  }
+  
+  .pl-#{$size} {
+    padding-left: $value !important;
+  }
+}
+
+// 动画
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// 响应式工具类
+@include respond-to('tablet') {
+  .hidden-tablet {
+    display: none !important;
+  }
+}
+
+@include respond-to('mobile') {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+// 深色主题样式
+.dark {
+  // 深色主题颜色变量
+  --text-color-primary: #e5e7eb;
+  --text-color-regular: #d1d5db;
+  --text-color-secondary: #9ca3af;
+  --text-color-placeholder: #6b7280;
+  
+  --background-color-base: #111827;
+  --background-color-light: #1f2937;
+  --background-color-lighter: #374151;
+  --background-color-hover: #374151;
+  
+  --border-color-base: #374151;
+  --border-color-light: #4b5563;
+  --border-color-lighter: #6b7280;
+  
+  --color-white: #1f2937;
+  --box-shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  --box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  
+  // 应用深色主题样式
+  body {
+    background-color: var(--background-color-base) !important;
+    color: var(--text-color-primary) !important;
+  }
+  
+  // Element Plus 组件深色主题覆盖
+  .el-button {
+    &--default {
+      background-color: var(--background-color-light) !important;
+      border-color: var(--border-color-base) !important;
+      color: var(--text-color-primary) !important;
+      
+      &:hover {
+        background-color: var(--background-color-hover) !important;
+        border-color: var(--border-color-light) !important;
+      }
+    }
+  }
+  
+  .el-input {
+    .el-input__wrapper {
+      background-color: var(--background-color-light) !important;
+      border-color: var(--border-color-base) !important;
+      box-shadow: 0 0 0 1px var(--border-color-base) inset !important;
+      
+      .el-input__inner {
+        color: var(--text-color-primary) !important;
+        
+        &::placeholder {
+          color: var(--text-color-placeholder) !important;
+        }
+      }
+    }
+  }
+  
+  .el-dropdown-menu {
+    background-color: var(--background-color-light) !important;
+    border-color: var(--border-color-base) !important;
+    
+    .el-dropdown-menu__item {
+      color: var(--text-color-primary) !important;
+      
+      &:hover {
+        background-color: var(--background-color-hover) !important;
+      }
+    }
+  }
+  
+  .el-tooltip__popper {
+    background-color: var(--background-color-light) !important;
+    border-color: var(--border-color-base) !important;
+    color: var(--text-color-primary) !important;
+  }
+  
+  // 卡片深色主题
+  .card {
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow-base);
+    
+    &__header {
+      border-bottom-color: var(--border-color-light);
+      
+      &-title {
+        color: var(--text-color-primary);
+      }
+    }
+    
+    &__footer {
+      background-color: var(--background-color-light);
+      border-top-color: var(--border-color-light);
+    }
+  }
+  
+  // 表单深色主题
+  .form {
+    &__label {
+      color: var(--text-color-primary);
+    }
+    
+    &__input {
+      background-color: var(--background-color-light);
+      border-color: var(--border-color-base);
+      color: var(--text-color-primary);
+      
+      &::placeholder {
+        color: var(--text-color-placeholder);
+      }
+      
+      &:disabled {
+        background-color: var(--background-color-hover);
+      }
+    }
+  }
+  
+  // 表格深色主题
+  .table {
+    background-color: var(--color-white);
+    
+    &__header {
+      background-color: var(--background-color-light);
+      border-bottom-color: var(--border-color-light);
+    }
+    
+    &__row {
+      border-bottom-color: var(--border-color-light);
+      
+      &:hover {
+        background-color: var(--background-color-hover);
+      }
+      
+      &--selected {
+        background-color: rgba($color-primary, 0.2);
+      }
+    }
+  }
+  
+  // 文本工具类深色主题
+  .text {
+    &--primary {
+      color: var(--text-color-primary) !important;
+    }
+    
+    &--secondary {
+      color: var(--text-color-secondary) !important;
+    }
+    
+    &--placeholder {
+      color: var(--text-color-placeholder) !important;
+    }
+  }
+  
+  // 空状态深色主题
+  .empty {
+    &__text {
+      color: var(--text-color-secondary);
+    }
+    
+    &__description {
+      color: var(--text-color-placeholder);
+    }
+  }
+  
+  // 加载状态深色主题
+  .loading {
+    &__spinner {
+      border-color: var(--border-color-light);
+      border-top-color: $color-primary;
+    }
+    
+    &__text {
+      color: var(--text-color-secondary);
+    }
+  }
+} 

@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 忽略除README.md外的其他.md文件
+*.md
+!README.md
+
+# 忽略优化建议相关的TypeScript文件
+优化建议-*.ts
+
+# 忽略项目总结和优化相关文件
+优化实施计划.md
+Vue-Service-项目总结-Notion.md
+Vue-Service-优化建议总结.md
+登录认证功能实现总结.md
+项目布局重构总结.md
+项目重构总结.md
+vue-frontend-rules.md

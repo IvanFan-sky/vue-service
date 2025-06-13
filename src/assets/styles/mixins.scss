@@ -1,0 +1,496 @@
+/**
+ * SCSS混入函数
+ * @description 项目中使用的所有SCSS混入函数
+ * @author 开发团队
+ * @date 2024-12-12
+ * @version 1.0.0
+ */
+
+/**
+ * 响应式断点 mixin
+ * 使用方法：@include respond-to('mobile') { ... }
+ */
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  } @else {
+    @warn "断点 `#{$breakpoint}` 不存在于 $breakpoints 映射表中。";
+  }
+}
+
+/**
+ * 隐藏滚动条
+ */
+@mixin hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/**
+ * 文本省略号
+ */
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/**
+ * 多行文本省略号
+ */
+@mixin text-ellipsis-multi($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/**
+ * Flexbox 居中
+ */
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/**
+ * 响应式容器
+ */
+@mixin responsive-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+  
+  @include respond-to('tablet') {
+    padding: 0 $spacing-sm;
+  }
+  
+  @include respond-to('mobile') {
+    padding: 0 $spacing-xs;
+  }
+}
+
+/**
+ * 移动端触摸优化
+ */
+@mixin touch-optimized {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+/**
+ * 卡片样式
+ */
+@mixin card-style {
+  background: $color-white;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow-base;
+  border: 1px solid $border-color-light;
+  
+  @include respond-to('mobile') {
+    border-radius: $border-radius-base;
+    box-shadow: $box-shadow-sm;
+  }
+}
+
+/**
+ * 按钮响应式样式
+ */
+@mixin responsive-button {
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-sm;
+  
+  @include respond-to('tablet') {
+    padding: $spacing-xs $spacing-sm;
+    font-size: $font-size-xs;
+  }
+  
+  @include respond-to('mobile') {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+/**
+ * 表格响应式样式
+ */
+@mixin responsive-table {
+  width: 100%;
+  overflow-x: auto;
+  
+  @include respond-to('tablet') {
+    font-size: $font-size-xs;
+    
+    .el-table__header th,
+    .el-table__body td {
+      padding: 8px 6px;
+    }
+  }
+  
+  @include respond-to('mobile') {
+    font-size: 11px;
+    
+    .el-table__header th,
+    .el-table__body td {
+      padding: 6px 4px;
+    }
+    
+    .el-button {
+      padding: 2px 6px;
+      font-size: 10px;
+    }
+  }
+}
+
+/**
+ * 统计卡片响应式样式
+ */
+@mixin responsive-stat-card {
+  @include card-style;
+  
+  .stat-content {
+    padding: $spacing-lg;
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+  
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+  
+  .stat-number {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  .stat-label {
+    font-size: $font-size-sm;
+    color: $text-color-regular;
+  }
+  
+  @include respond-to('desktop') {
+    .stat-content {
+      padding: $spacing-md;
+      gap: $spacing-sm;
+    }
+    
+    .stat-icon {
+      width: 40px;
+      height: 40px;
+    }
+    
+    .stat-number {
+      font-size: 20px;
+    }
+  }
+  
+  @include respond-to('tablet') {
+    .stat-content {
+      padding: $spacing-sm;
+      gap: $spacing-xs;
+    }
+    
+    .stat-icon {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .stat-number {
+      font-size: 16px;
+    }
+    
+    .stat-label {
+      font-size: $font-size-xs;
+    }
+  }
+  
+  @include respond-to('mobile') {
+    .stat-content {
+      padding: $spacing-xs;
+    }
+    
+    .stat-icon {
+      width: 28px;
+      height: 28px;
+    }
+    
+    .stat-number {
+      font-size: 14px;
+    }
+    
+    .stat-label {
+      font-size: 11px;
+    }
+  }
+}
+
+// 清除浮动
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// 居中对齐
+@mixin center($position: absolute) {
+  position: $position;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+// 垂直居中
+@mixin center-vertical($position: absolute) {
+  position: $position;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+// 水平居中
+@mixin center-horizontal($position: absolute) {
+  position: $position;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+// Flex布局居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Flex布局垂直居中
+@mixin flex-center-vertical {
+  display: flex;
+  align-items: center;
+}
+
+// Flex布局水平居中
+@mixin flex-center-horizontal {
+  display: flex;
+  justify-content: center;
+}
+
+// 按钮样式混入
+@mixin button-variant($color, $background, $border) {
+  color: $color;
+  background-color: $background;
+  border-color: $border;
+
+  &:hover {
+    color: $color;
+    background-color: lighten($background, 10%);
+    border-color: lighten($border, 10%);
+  }
+
+  &:active {
+    color: $color;
+    background-color: darken($background, 10%);
+    border-color: darken($border, 10%);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// 按钮大小混入
+@mixin button-size($padding-y, $padding-x, $font-size, $border-radius) {
+  padding: $padding-y $padding-x;
+  font-size: $font-size;
+  border-radius: $border-radius;
+}
+
+// 卡片阴影混入
+@mixin card-shadow($level: 1) {
+  @if $level == 1 {
+    box-shadow: $box-shadow-sm;
+  } @else if $level == 2 {
+    box-shadow: $box-shadow-base;
+  } @else if $level == 3 {
+    box-shadow: $box-shadow-md;
+  } @else if $level == 4 {
+    box-shadow: $box-shadow-lg;
+  } @else if $level == 5 {
+    box-shadow: $box-shadow-xl;
+  }
+}
+
+// 过渡动画混入
+@mixin transition($properties: all, $duration: $transition-duration, $timing: $transition-timing) {
+  transition: $properties $duration $timing;
+}
+
+// 渐变背景混入
+@mixin gradient-background($start-color, $end-color, $direction: to right) {
+  background: linear-gradient($direction, $start-color, $end-color);
+}
+
+// 自定义滚动条
+@mixin custom-scrollbar($width: 8px, $track-color: $color-gray-100, $thumb-color: $color-gray-400) {
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $width;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: $track-color;
+    border-radius: $width / 2;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: $width / 2;
+
+    &:hover {
+      background: darken($thumb-color, 10%);
+    }
+  }
+}
+
+// 三角形箭头
+@mixin triangle($direction, $size, $color) {
+  width: 0;
+  height: 0;
+  border: $size solid transparent;
+
+  @if $direction == up {
+    border-bottom-color: $color;
+  } @else if $direction == down {
+    border-top-color: $color;
+  } @else if $direction == left {
+    border-right-color: $color;
+  } @else if $direction == right {
+    border-left-color: $color;
+  }
+}
+
+// 圆形头像
+@mixin avatar($size: 40px) {
+  width: $size;
+  height: $size;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+// 加载动画
+@mixin loading-spinner($size: 20px, $border-width: 2px, $color: $color-primary) {
+  width: $size;
+  height: $size;
+  border: $border-width solid rgba($color, 0.2);
+  border-top-color: $color;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+// 输入框样式
+@mixin input-style($border-color: $form-input-border-color, $focus-color: $form-input-focus-border-color) {
+  width: 100%;
+  padding: $spacing-sm;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-base;
+  font-size: $font-size-base;
+  transition: border-color $transition-duration;
+
+  &:focus {
+    outline: none;
+    border-color: $focus-color;
+    box-shadow: 0 0 0 2px rgba($focus-color, 0.2);
+  }
+
+  &::placeholder {
+    color: $text-color-placeholder;
+  }
+
+  &:disabled {
+    background-color: $form-input-disabled-bg;
+    cursor: not-allowed;
+  }
+}
+
+// 表格样式
+@mixin table-style {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: $color-white;
+
+  th,
+  td {
+    padding: $spacing-sm $spacing-md;
+    border-bottom: 1px solid $table-border-color;
+    text-align: left;
+  }
+
+  th {
+    background-color: $table-header-bg;
+    font-weight: 600;
+  }
+
+  tr:hover {
+    background-color: $table-row-hover-bg;
+  }
+}
+
+// 模态框遮罩
+@mixin modal-backdrop($z-index: $z-index-modal-backdrop, $bg-color: rgba(0, 0, 0, 0.5)) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $bg-color;
+  z-index: $z-index;
+}
+
+// 文字选择样式
+@mixin selection($bg-color: $color-primary, $text-color: $color-white) {
+  ::selection {
+    background-color: $bg-color;
+    color: $text-color;
+  }
+
+  ::-moz-selection {
+    background-color: $bg-color;
+    color: $text-color;
+  }
+}
+
+// 占位符样式
+@mixin placeholder($color: $text-color-placeholder) {
+  &::placeholder {
+    color: $color;
+    opacity: 1;
+  }
+
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+
+  &::-moz-placeholder {
+    color: $color;
+    opacity: 1;
+  }
+
+  &:-ms-input-placeholder {
+    color: $color;
+  }
+} 
