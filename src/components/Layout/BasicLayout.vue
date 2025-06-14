@@ -77,7 +77,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import '@/assets/styles/variables.scss';
+  @use '@/assets/styles/variables' as *;
 
   .basic-layout {
     display: flex;

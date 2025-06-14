@@ -22,20 +22,20 @@ export const menuItems: MenuItem[] = [
     id: 'users',
     title: '用户管理',
     icon: 'users',
-    path: '/users',
+    path: '/user',
     roles: ['admin'], // 仅管理员可见
     children: [
       {
         id: 'user-list',
         title: '用户列表',
         icon: 'list',
-        path: '/users/list'
+        path: '/user/list'
       },
       {
-        id: 'user-roles',
+        id: 'role-management',
         title: '角色管理',
         icon: 'role',
-        path: '/users/roles',
+        path: '/user/roles',
         roles: ['admin']
       }
     ]
@@ -48,16 +48,10 @@ export const menuItems: MenuItem[] = [
     roles: ['admin'],
     children: [
       {
-        id: 'system-config',
-        title: '系统配置',
-        icon: 'config',
-        path: '/system/config'
-      },
-      {
-        id: 'system-logs',
-        title: '系统日志',
-        icon: 'logs',
-        path: '/system/logs'
+        id: 'system-settings',
+        title: '系统设置',
+        icon: 'settings',
+        path: '/system/settings'
       }
     ]
   },

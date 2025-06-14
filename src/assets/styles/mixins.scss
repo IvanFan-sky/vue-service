@@ -6,13 +6,17 @@
  * @version 1.0.0
  */
 
+@use 'sass:map';
+@use 'sass:color';
+@use './variables' as *;
+
 /**
  * 响应式断点 mixin
  * 使用方法：@include respond-to('mobile') { ... }
  */
 @mixin respond-to($breakpoint) {
-  @if map-has-key($breakpoints, $breakpoint) {
-    @media (max-width: map-get($breakpoints, $breakpoint)) {
+  @if map.has-key($breakpoints, $breakpoint) {
+    @media (max-width: map.get($breakpoints, $breakpoint)) {
       @content;
     }
   } @else {
@@ -297,14 +301,14 @@
 
   &:hover {
     color: $color;
-    background-color: lighten($background, 10%);
-    border-color: lighten($border, 10%);
+    background-color: color.adjust($background, $lightness: 10%);
+    border-color: color.adjust($border, $lightness: 10%);
   }
 
   &:active {
     color: $color;
-    background-color: darken($background, 10%);
-    border-color: darken($border, 10%);
+    background-color: color.adjust($background, $lightness: -10%);
+    border-color: color.adjust($border, $lightness: -10%);
   }
 
   &:disabled {
@@ -362,7 +366,7 @@
     border-radius: $width / 2;
 
     &:hover {
-      background: darken($thumb-color, 10%);
+      background: color.adjust($thumb-color, $lightness: -10%);
     }
   }
 }

@@ -110,6 +110,7 @@ $border-radius-lg: 8px;
 $border-radius-xl: 12px;
 $border-radius-2xl: 16px;
 $border-radius-full: 50%;
+$border-radius-round: 50%;
 
 // 阴影
 $box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -182,3 +183,22 @@ $button-padding-x: $spacing-md;
 $header-height: 60px;
 $sidebar-width: 240px;
 $sidebar-collapsed-width: 64px;
+
+// 深色主题颜色
+$dark-background-color-base: #111827;
+$dark-background-color-light: #1f2937;
+$dark-background-color-lighter: #374151;
+$dark-background-color-disabled: #374151;
+$dark-background-color-hover: #374151;
+
+// 深色主题文本颜色
+$dark-text-color-primary: #f9fafb;
+$dark-text-color-regular: #d1d5db;
+$dark-text-color-secondary: #9ca3af;
+$dark-text-color-placeholder: #6b7280;
+
+// 深色主题边框颜色
+$dark-border-color-base: #374151;
+$dark-border-color-light: #4b5563;
+$dark-border-color-lighter: #6b7280;
+$dark-border-color-extra-light: #9ca3af;

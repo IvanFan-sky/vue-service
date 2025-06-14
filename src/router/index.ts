@@ -46,6 +46,16 @@ const routes: RouteRecordRaw[] = [
         } as RouteMeta
       },
       {
+        path: '/user',
+        name: 'User',
+        redirect: '/user/list',
+        meta: {
+          title: '用户管理',
+          icon: 'UserFilled',
+          requireAuth: true
+        } as RouteMeta
+      },
+      {
         path: '/user/list',
         name: 'UserManagement',
         component: routeLazyLoad('@/views/UserManagement.vue', 'user-management', {
@@ -78,7 +88,7 @@ const routes: RouteRecordRaw[] = [
         } as RouteMeta
       },
       {
-        path: '/system/roles',
+        path: '/user/roles',
         name: 'RoleManagement',
         component: routeLazyLoad('@/views/RoleManagement.vue', 'role-management', {
           delay: 150
@@ -88,8 +98,8 @@ const routes: RouteRecordRaw[] = [
           icon: 'UserFilled',
           requireAuth: true,
           breadcrumb: [
-            { title: '系统管理', path: '/system' },
-            { title: '角色管理', path: '/system/roles' }
+            { title: '用户管理', path: '/user' },
+            { title: '角色管理', path: '/user/roles' }
           ]
         } as RouteMeta
       },

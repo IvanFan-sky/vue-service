@@ -273,13 +273,11 @@
   const handleUserCommand = async (command: string) => {
     switch (command) {
       case 'profile':
-        ElMessage.info(t('nav.profile'))
-        // TODO: 跳转到个人信息页面
+        router.push('/user/profile')
         break
 
       case 'settings':
-        ElMessage.info(t('nav.systemSettings'))
-        // TODO: 跳转到系统设置页面
+        router.push('/system/settings')
         break
 
       case 'logout':
@@ -307,7 +305,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import '@/assets/styles/variables.scss';
+  @use '@/assets/styles/variables' as *;
 
   .app-header {
     display: flex;

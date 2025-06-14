@@ -235,7 +235,8 @@
 </script>
 
 <style scoped lang="scss">
-  @import '@/assets/styles/variables.scss';
+  @use '@/assets/styles/variables' as *;
+  @use 'sass:color';
 
   .login-container {
     min-height: 100vh;
@@ -464,7 +465,7 @@
       gap: 8px;
 
       &:hover:not(:disabled) {
-        background: darken($color-primary, 10%);
+        background: color.adjust($color-primary, $lightness: -10%);
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba($color-primary, 0.3);
       }

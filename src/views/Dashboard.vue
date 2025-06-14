@@ -242,7 +242,8 @@
 </script>
 
 <style scoped lang="scss">
-  @import '@/assets/styles/variables.scss';
+  @use '@/assets/styles/variables' as *;
+  @use 'sass:color';
 
   .dashboard {
     width: 100%;
@@ -251,7 +252,7 @@
 
   // 欢迎区域
   .welcome-section {
-    background: linear-gradient(135deg, $color-primary 0%, lighten($color-primary, 10%) 100%);
+    background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: 10%) 100%);
     border-radius: $border-radius-lg;
     padding: $spacing-xl;
     margin-bottom: $spacing-lg;
@@ -407,19 +408,19 @@
     color: $color-white;
 
     &.stat-icon-primary {
-      background: linear-gradient(135deg, $color-primary 0%, lighten($color-primary, 10%) 100%);
+      background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: 10%) 100%);
     }
 
     &.stat-icon-success {
-      background: linear-gradient(135deg, $color-success 0%, lighten($color-success, 10%) 100%);
+      background: linear-gradient(135deg, $color-success 0%, color.adjust($color-success, $lightness: 10%) 100%);
     }
 
     &.stat-icon-warning {
-      background: linear-gradient(135deg, $color-warning 0%, lighten($color-warning, 10%) 100%);
+      background: linear-gradient(135deg, $color-warning 0%, color.adjust($color-warning, $lightness: 10%) 100%);
     }
 
     &.stat-icon-info {
-      background: linear-gradient(135deg, $color-info 0%, lighten($color-info, 10%) 100%);
+      background: linear-gradient(135deg, $color-info 0%, color.adjust($color-info, $lightness: 10%) 100%);
     }
   }
 

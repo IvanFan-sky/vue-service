@@ -7,8 +7,8 @@
  */
 
 // 导入变量和混入
-@import './variables.scss';
-@import './mixins.scss';
+@use './variables' as *;
+@use './mixins' as *;
 
 // 重置样式
 * {

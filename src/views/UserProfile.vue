@@ -582,7 +582,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import '@/assets/styles/variables.scss';
+  @use '@/assets/styles/variables' as *;
 
   .user-profile {
     padding: $spacing-lg;

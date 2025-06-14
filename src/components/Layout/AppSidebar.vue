@@ -46,24 +46,20 @@
             <template #title>用户列表</template>
           </el-menu-item>
           <el-menu-item index="/user/roles">
-            <el-icon><Avatar /></el-icon>
+            <el-icon><Tools /></el-icon>
             <template #title>角色管理</template>
           </el-menu-item>
         </el-sub-menu>
 
-        <!-- 系统设置 -->
+        <!-- 系统管理 -->
         <el-sub-menu index="system">
           <template #title>
             <el-icon><Setting /></el-icon>
             <span>{{ t('nav.systemSettings') }}</span>
           </template>
-          <el-menu-item index="/system/config">
-            <el-icon><Tools /></el-icon>
-            <template #title>系统配置</template>
-          </el-menu-item>
-          <el-menu-item index="/system/logs">
+          <el-menu-item index="/system/settings">
             <el-icon><Document /></el-icon>
-            <template #title>系统日志</template>
+            <template #title>系统设置</template>
           </el-menu-item>
         </el-sub-menu>
 
@@ -151,7 +147,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import '@/assets/styles/variables.scss';
+  @use '@/assets/styles/variables' as *;
 
   // CSS变量定义
   :root {

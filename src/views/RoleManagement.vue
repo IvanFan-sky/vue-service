@@ -683,7 +683,7 @@
 </script>
 
 <style scoped lang="scss">
-  @import '@/assets/styles/variables.scss';
+  @use '@/assets/styles/variables' as *;
 
   .role-management {
     padding: $spacing-lg;
