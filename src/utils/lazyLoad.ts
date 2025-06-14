@@ -152,7 +152,7 @@ export const routeLazyLoad = (
  * @returns Promise
  */
 export const preloadComponent = (componentPath: string): Promise<any> => {
-  return import(componentPath).catch(error => {
+  return import(/* @vite-ignore */ componentPath).catch(error => {
     console.warn('组件预加载失败:', componentPath, error)
   })
 }
@@ -210,7 +210,7 @@ export const useLazyLoad = () => {
       return loadingComponents.get(componentPath)
     }
 
-    const loadPromise = import(componentPath)
+    const loadPromise = import(/* @vite-ignore */ componentPath)
       .then(component => {
         loadedComponents.add(componentPath)
         loadingComponents.delete(componentPath)
