@@ -2,8 +2,8 @@
  * 请求缓存管理器
  * @description 提供智能的HTTP请求缓存功能
  * @author 开发团队
- * @date 2024-12-12
- * @version 1.0.0
+ * @date 2024-12-14
+ * @version 2.0.0
  */
 
 interface CacheItem {

@@ -6,7 +6,7 @@
  * @version 1.0.0
  */
 
-import request from '@/utils/request'
+import { apiClient } from '@/utils/apiClient'
 import { mockAuthApi } from './mock/auth'
 import type { LoginForm, User, ApiResponse } from '@/types'
 
@@ -32,7 +32,12 @@ const realAuthApi = {
    * ```
    */
   login: (loginForm: LoginForm): Promise<ApiResponse<{ token: string; user: User; refreshToken?: string }>> => {
-    return request.post('/auth/login', loginForm)
+    return apiClient.post('/auth/login', loginForm, {
+      showLoading: true,
+      showErrorMessage: true,
+      retryCount: 2,
+      retryDelay: 1000
+    })
   },
 
   /**
@@ -44,7 +49,10 @@ const realAuthApi = {
    * ```
    */
   getUserInfo: (): Promise<ApiResponse<User>> => {
-    return request.get('/auth/user')
+    return apiClient.get('/auth/user', {
+      enableDedupe: true,
+      showErrorMessage: false // 用户信息获取失败不显示错误消息
+    })
   },
 
   /**
@@ -56,7 +64,11 @@ const realAuthApi = {
    * ```
    */
   logout: (): Promise<ApiResponse> => {
-    return request.post('/auth/logout')
+    return apiClient.post('/auth/logout', {}, {
+      showLoading: false,
+      enableDedupe: false,
+      retryCount: 1
+    })
   },
 
   /**
@@ -69,7 +81,11 @@ const realAuthApi = {
    * ```
    */
   refreshToken: (refreshToken: string): Promise<ApiResponse<{ token: string; refreshToken?: string }>> => {
-    return request.post('/auth/refresh', { refreshToken })
+    return apiClient.post('/auth/refresh', { refreshToken }, {
+      enableDedupe: false,
+      showErrorMessage: false,
+      retryCount: 1
+    })
   },
 
   /**
@@ -87,7 +103,10 @@ const realAuthApi = {
    * @returns Promise<ApiResponse>
    */
   resetPassword: (data: { email: string }): Promise<ApiResponse> => {
-    return request.post('/auth/reset-password', data)
+    return apiClient.post('/auth/reset-password', data, {
+      showLoading: true,
+      retryCount: 2
+    })
   }
 }
 
