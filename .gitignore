@@ -23,9 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# 忽略除README.md外的其他.md文件
+# 忽略除README.md和COMMIT_CONVENTION.md外的其他.md文件
 *.md
 !README.md
+!COMMIT_CONVENTION.md
 
 # 忽略优化建议相关的TypeScript文件
 优化建议-*.ts
