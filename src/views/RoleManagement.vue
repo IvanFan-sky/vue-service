@@ -595,8 +595,9 @@
     }
   }
 
-  const handleViewUsers = () => {
+  const handleViewUsers = (row: any) => {
     // 跳转到用户管理页面，并筛选该角色的用户
+    console.log('查看角色用户:', row)
     ElMessage.info('跳转到用户管理页面功能待实现')
   }
 

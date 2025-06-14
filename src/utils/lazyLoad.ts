@@ -42,7 +42,7 @@ const defaultOptions: Required<LazyLoadOptions> = {
 /**
  * 创建错误组件
  */
-const createErrorComponent = (error: Error, retry: () => void) => {
+const createErrorComponent = () => {
   return {
     template: `
       <div class="lazy-load-error">
@@ -51,9 +51,8 @@ const createErrorComponent = (error: Error, retry: () => void) => {
             <WarningFilled />
           </el-icon>
           <h3>组件加载失败</h3>
-          <p>{{ error.message }}</p>
+          <p>请检查网络连接或稍后重试</p>
           <div class="error-actions">
-            <el-button @click="retry" type="primary">重试</el-button>
             <el-button @click="goBack">返回</el-button>
           </div>
         </div>
@@ -65,8 +64,6 @@ const createErrorComponent = (error: Error, retry: () => void) => {
       }
 
       return {
-        error,
-        retry,
         goBack
       }
     }
@@ -102,14 +99,14 @@ export const lazyLoad = (
         return loadWithRetry()
       }
 
-      throw error
+      throw _error
     }
   }
 
   return defineAsyncComponent({
     loader: loadWithRetry,
     loadingComponent: config.showLoading ? LoadingComponent : undefined,
-    errorComponent: config.showError ? createErrorComponent : undefined,
+    errorComponent: config.showError ? createErrorComponent() : undefined,
     delay: config.delay,
     timeout: config.timeout,
     suspensible: false

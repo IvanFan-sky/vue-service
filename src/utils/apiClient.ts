@@ -152,7 +152,7 @@ export class ApiClient {
         return config
       },
       error => {
-        console.error('❌ 请求拦截器错误:', _error)
+        console.error('❌ 请求拦截器错误:', error)
         return Promise.reject(error)
       }
     )
@@ -194,7 +194,7 @@ export class ApiClient {
 
         // 显示错误消息
         if (config?.showErrorMessage !== false) {
-          ElMessage.error(handledError.message)
+          ElMessage.error((handledError as any).message || '请求失败')
         }
 
         return Promise.reject(handledError)
@@ -214,7 +214,7 @@ export class ApiClient {
         config.headers.Authorization = `Bearer ${token}`
       }
     } catch (_error) {
-      console.warn('获取Token失败:', error)
+      console.warn('获取Token失败:', _error)
     }
   }
 
@@ -314,7 +314,7 @@ export class ApiClient {
       const response = await this.instance.request<ApiResponse<T>>(config)
       return response.data
     } catch (_error) {
-      throw error
+      throw _error
     }
   }
 

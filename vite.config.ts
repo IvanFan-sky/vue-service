@@ -144,6 +144,6 @@ export default defineConfig({
   // 开发环境优化
   esbuild: {
     // 生产环境移除 console
-    drop: import.meta.env?.MODE === 'production' ? ['console', 'debugger'] : [],
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
   },
 })

@@ -134,7 +134,7 @@ const realConfigApi = {
   getAll: (): Promise<SystemConfig[]> =>
     apiClient.get('/api/system/configs', {
       enableDedupe: true
-    }),
+    }).then(res => res.data),
 
   /**
    * 按分组获取配置
@@ -143,7 +143,7 @@ const realConfigApi = {
   getGroups: (): Promise<ConfigGroup[]> =>
     apiClient.get('/api/system/config-groups', {
       enableDedupe: true
-    }),
+    }).then(res => res.data),
 
   /**
    * 获取指定分组的配置
@@ -153,14 +153,14 @@ const realConfigApi = {
   getByGroup: (group: string): Promise<SystemConfig[]> =>
     apiClient.get(`/api/system/configs/${group}`, {
       enableDedupe: true
-    }),
+    }).then(res => res.data),
 
   /**
    * 获取单个配置
    * @param key 配置键
    * @returns 配置值
    */
-  get: (key: string): Promise<string> => apiClient.get(`/api/system/config/${key}`),
+  get: (key: string): Promise<string> => apiClient.get(`/api/system/config/${key}`).then(res => res.data),
 
   /**
    * 更新配置
@@ -171,7 +171,7 @@ const realConfigApi = {
     apiClient.post('/api/system/configs', data, {
       showLoading: true,
       retryCount: 2
-    }),
+    }).then(res => res.data),
 
   /**
    * 重置配置到默认值
@@ -185,7 +185,7 @@ const realConfigApi = {
       {
         showLoading: true
       }
-    ),
+    ).then(res => res.data),
 
   /**
    * 导出配置
@@ -194,7 +194,7 @@ const realConfigApi = {
   export: (): Promise<Blob> =>
     apiClient.get('/api/system/configs/export', {
       responseType: 'blob'
-    }),
+    }).then(res => res.data),
 
   /**
    * 导入配置
@@ -209,7 +209,7 @@ const realConfigApi = {
         'Content-Type': 'multipart/form-data'
       },
       showLoading: true
-    })
+    }).then(res => res.data)
   }
 }
 
@@ -229,7 +229,7 @@ const realLogApi = {
     total: number
     page: number
     pageSize: number
-  }> => apiClient.get('/api/system/logs', { params }),
+  }> => apiClient.get('/api/system/logs', { params }).then(res => res.data),
 
   /**
    * 清理日志
@@ -243,7 +243,7 @@ const realLogApi = {
       {
         showLoading: true
       }
-    ),
+    ).then(res => res.data),
 
   /**
    * 导出日志
@@ -254,7 +254,7 @@ const realLogApi = {
     apiClient.get('/api/system/logs/export', {
       params,
       responseType: 'blob'
-    })
+    }).then(res => res.data)
 }
 
 /**
@@ -301,7 +301,7 @@ const realTestApi = {
   testDatabase: (): Promise<{ success: boolean; message: string; version: string }> =>
     apiClient.get('/api/system/test-database', {
       showLoading: true
-    })
+    }).then(res => res.data)
 }
 
 /**
@@ -315,7 +315,7 @@ const realSecurityApi = {
   getConfig: (): Promise<SecurityConfig> =>
     apiClient.get('/api/system/security', {
       enableDedupe: true
-    }),
+    }).then(res => res.data),
 
   /**
    * 更新安全配置
@@ -325,7 +325,7 @@ const realSecurityApi = {
   updateConfig: (config: SecurityConfig): Promise<void> =>
     apiClient.put('/api/system/security', config, {
       showLoading: true
-    }),
+    }).then(res => res.data),
 
   /**
    * 获取登录日志
@@ -350,7 +350,7 @@ const realSecurityApi = {
       loginTime: string
     }>
     total: number
-  }> => apiClient.get('/api/system/login-logs', { params })
+  }> => apiClient.get('/api/system/login-logs', { params }).then(res => res.data)
 }
 
 /**

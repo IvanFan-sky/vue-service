@@ -14,6 +14,8 @@ export interface User {
   id: number
   /** 用户名 */
   username: string
+  /** 真实姓名 */
+  realName?: string
   /** 邮箱地址，可选 */
   email?: string
   /** 手机号，可选 */
@@ -26,12 +28,26 @@ export interface User {
   roles?: UserRole[]
   /** 用户权限列表 */
   permissions?: string[]
+  /** 性别 */
+  gender?: 'male' | 'female' | 'other'
+  /** 年龄 */
+  age?: number
+  /** 部门 */
+  department?: string
+  /** 职位 */
+  position?: string
+  /** 地址 */
+  address?: string
+  /** 备注 */
+  remark?: string
   /** 创建时间 */
   createdAt?: string
   /** 更新时间 */
   updatedAt?: string
   /** 最后登录时间 */
   lastLoginTime?: string
+  /** 登录次数 */
+  loginCount?: number
   /** 用户状态 */
   status: UserStatus
 }

@@ -106,7 +106,7 @@ const realAuthApi = {
    * @returns Promise<ApiResponse>
    */
   changePassword: (data: { oldPassword: string; newPassword: string }): Promise<ApiResponse> => {
-    return request.post('/auth/change-password', data)
+    return apiClient.post('/auth/change-password', data)
   },
 
   /**

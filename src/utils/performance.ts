@@ -20,7 +20,7 @@ export function debounce<T extends (...args: any[]) => any>(
   wait: number,
   immediate = false
 ): (...args: Parameters<T>) => void {
-  let timeout: NodeJS.Timeout | null = null
+  let timeout: number | null = null
 
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
@@ -173,7 +173,7 @@ export function runWhenIdle(func: () => void, options: { timeout?: number } = {}
 export function createBatchExecutor<T>(batchSize = 10, delay = 16) {
   const queue: Array<{ func: () => T; resolve: (value: T) => void; reject: (error: any) => void }> =
     []
-  let timeoutId: NodeJS.Timeout | null = null
+  let timeoutId: number | null = null
 
   const processBatch = () => {
     const batch = queue.splice(0, batchSize)
@@ -183,7 +183,7 @@ export function createBatchExecutor<T>(batchSize = 10, delay = 16) {
         const result = func()
         resolve(result)
       } catch (_error) {
-        reject(error)
+        reject(_error)
       }
     })
 
@@ -221,7 +221,7 @@ export function createBatchExecutor<T>(batchSize = 10, delay = 16) {
  */
 export function createMemoryMonitor() {
   let isMonitoring = false
-  let intervalId: NodeJS.Timeout | null = null
+  let intervalId: number | null = null
 
   const checkMemory = () => {
     if ('memory' in performance) {

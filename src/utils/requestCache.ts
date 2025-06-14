@@ -155,14 +155,14 @@ export class RequestCache {
   private evictLRU(): void {
     let oldestKey = ''
     let oldestTime = Date.now()
-    const _lowestPriority: 'high' | 'medium' | 'low' = 'high'
+    let _lowestPriority: 'high' | 'medium' | 'low' = 'high'
 
     // 优先淘汰低优先级的缓存
     for (const [key, item] of this.cache.entries()) {
       if (item.priority === 'low' && item.lastAccess < oldestTime) {
         oldestTime = item.lastAccess
         oldestKey = key
-        lowestPriority = 'low'
+        _lowestPriority = 'low'
       }
     }
 
@@ -173,7 +173,7 @@ export class RequestCache {
         if (item.priority === 'medium' && item.lastAccess < oldestTime) {
           oldestTime = item.lastAccess
           oldestKey = key
-          lowestPriority = 'medium'
+          _lowestPriority = 'medium'
         }
       }
     }
@@ -259,7 +259,7 @@ export class RequestCache {
         const { key, data, type } = await fn()
         this.set(key, data, type as keyof typeof this.cacheConfig)
       } catch (_error) {
-        console.warn('缓存预热失败:', error)
+        console.warn('缓存预热失败:', _error)
       }
     })
 

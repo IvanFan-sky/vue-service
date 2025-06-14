@@ -7,7 +7,7 @@
  */
 
 import request from '@/utils/request'
-import type { User } from '@/types/user'
+import type { User, UserImportResult, UserListQuery, UserListResult, UserStatistics, CreateUserRequest, UpdateUserRequest, BatchOperationRequest } from '@/types/user'
 
 /**
  * 用户管理API

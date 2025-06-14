@@ -115,7 +115,7 @@
           <!-- 失败详情 -->
           <div v-if="importResult.failureCount > 0" class="failure-details">
             <h4>{{ t('userManagement.import.failureDetails') }}</h4>
-            <el-table :data="importResult.failureDetails" style="width: 100%">
+            <el-table :data="importResult.failures" style="width: 100%">
               <el-table-column
                 prop="row"
                 :label="t('userManagement.import.rowNumber')"

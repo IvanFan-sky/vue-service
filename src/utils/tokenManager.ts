@@ -22,7 +22,7 @@ interface QueueItem {
 }
 
 export class TokenManager {
-  private refreshTimer: NodeJS.Timeout | null = null
+  private refreshTimer: number | null = null
   private isRefreshing = false
   private failedQueue: QueueItem[] = []
   private readonly REFRESH_THRESHOLD = 5 * 60 * 1000 // 5分钟
