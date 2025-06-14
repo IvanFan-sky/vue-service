@@ -63,7 +63,7 @@ const createErrorComponent = (error: Error, retry: () => void) => {
       const goBack = () => {
         window.history.back()
       }
-      
+
       return {
         error,
         retry,
@@ -93,7 +93,7 @@ export const lazyLoad = (
       return component
     } catch (error) {
       console.error('组件加载失败:', error)
-      
+
       if (retryCount < config.retryCount) {
         retryCount++
         console.log(`正在重试加载组件 (${retryCount}/${config.retryCount})`)
@@ -101,7 +101,7 @@ export const lazyLoad = (
         await new Promise(resolve => setTimeout(resolve, 1000 * retryCount))
         return loadWithRetry()
       }
-      
+
       throw error
     }
   }
@@ -137,7 +137,7 @@ export const routeLazyLoad = (
     '@/views/RoleManagement.vue': () => import('@/views/RoleManagement.vue'),
     '@/views/SystemSettings.vue': () => import('@/views/SystemSettings.vue'),
     '@/views/404.vue': () => import('@/views/404.vue'),
-    '@/components/Layout/BasicLayout.vue': () => import('@/components/Layout/BasicLayout.vue'),
+    '@/components/Layout/BasicLayout.vue': () => import('@/components/Layout/BasicLayout.vue')
   }
 
   const loader = importMap[componentPath] || (() => import(/* @vite-ignore */ componentPath))
@@ -178,7 +178,7 @@ export const preloadComponents = async (componentPaths: string[]): Promise<void>
 export const smartPreload = (currentRoute: string, routeConfig: Record<string, any>) => {
   // 预加载策略：预加载当前路由的子路由和相关路由
   const preloadRoutes: string[] = []
-  
+
   // 根据当前路由推测可能访问的路由
   if (currentRoute === '/login') {
     preloadRoutes.push('/dashboard')
@@ -187,7 +187,7 @@ export const smartPreload = (currentRoute: string, routeConfig: Record<string, a
   } else if (currentRoute.startsWith('/user')) {
     preloadRoutes.push('/user/list', '/user/roles')
   }
-  
+
   // 执行预加载
   preloadRoutes.forEach(route => {
     const component = routeConfig[route]

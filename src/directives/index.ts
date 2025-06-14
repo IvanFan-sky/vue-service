@@ -16,7 +16,7 @@ import { lazyLoad, lazyLoadBg } from './lazyLoad'
 export function setupDirectives(app: App) {
   // 图片懒加载指令
   app.directive('lazy', lazyLoad)
-  
+
   // 背景图片懒加载指令
   app.directive('lazy-bg', lazyLoadBg)
 }

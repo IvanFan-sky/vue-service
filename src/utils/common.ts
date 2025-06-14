@@ -23,12 +23,12 @@ export function debounce<T extends (...args: any[]) => any>(
   delay: number
 ): (...args: Parameters<T>) => void {
   let timeoutId: number | null = null
-  
+
   return (...args: Parameters<T>) => {
     if (timeoutId) {
       clearTimeout(timeoutId)
     }
-    
+
     timeoutId = setTimeout(() => {
       func(...args)
     }, delay)
@@ -52,10 +52,10 @@ export function throttle<T extends (...args: any[]) => any>(
   delay: number
 ): (...args: Parameters<T>) => void {
   let lastTime = 0
-  
+
   return (...args: Parameters<T>) => {
     const now = Date.now()
-    
+
     if (now - lastTime >= delay) {
       lastTime = now
       func(...args)
@@ -77,15 +77,15 @@ export function deepClone<T>(obj: T): T {
   if (obj === null || typeof obj !== 'object') {
     return obj
   }
-  
+
   if (obj instanceof Date) {
     return new Date(obj.getTime()) as T
   }
-  
+
   if (obj instanceof Array) {
     return obj.map(item => deepClone(item)) as T
   }
-  
+
   if (typeof obj === 'object') {
     const cloned = {} as T
     for (const key in obj) {
@@ -95,7 +95,7 @@ export function deepClone<T>(obj: T): T {
     }
     return cloned
   }
-  
+
   return obj
 }
 
@@ -112,13 +112,13 @@ export function deepClone<T>(obj: T): T {
  */
 export function formatFileSize(bytes: number, decimals = 2): string {
   if (bytes === 0) return '0 Bytes'
-  
+
   const k = 1024
   const dm = decimals < 0 ? 0 : decimals
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
-  
+
   const i = Math.floor(Math.log(bytes) / Math.log(k))
-  
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }
 
@@ -135,14 +135,14 @@ export function formatFileSize(bytes: number, decimals = 2): string {
  */
 export function formatDateTime(date: Date | number, format = 'YYYY-MM-DD HH:mm:ss'): string {
   const d = new Date(date)
-  
+
   const year = d.getFullYear()
   const month = String(d.getMonth() + 1).padStart(2, '0')
   const day = String(d.getDate()).padStart(2, '0')
   const hours = String(d.getHours()).padStart(2, '0')
   const minutes = String(d.getMinutes()).padStart(2, '0')
   const seconds = String(d.getSeconds()).padStart(2, '0')
-  
+
   return format
     .replace('YYYY', String(year))
     .replace('MM', month)
@@ -237,11 +237,11 @@ export function getUrlParam(name: string, url?: string): string | null {
 export function setUrlParams(params: Record<string, string>, url?: string): string {
   const targetUrl = url || window.location.href
   const urlObj = new URL(targetUrl)
-  
+
   Object.entries(params).forEach(([key, value]) => {
     urlObj.searchParams.set(key, value)
   })
-  
+
   return urlObj.toString()
 }
 
@@ -298,4 +298,4 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     console.error('复制到剪贴板失败:', error)
     return false
   }
-} 
+}

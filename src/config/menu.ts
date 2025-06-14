@@ -110,28 +110,30 @@ export const menuItems: MenuItem[] = [
  * @returns 过滤后的菜单列表
  */
 export function filterMenusByRole(menus: MenuItem[], userRole?: string): MenuItem[] {
-  return menus.filter(menu => {
-    // 如果菜单没有角色限制，则显示
-    if (!menu.roles || menu.roles.length === 0) {
-      return true
-    }
-    
-    // 检查用户角色是否匹配
-    if (userRole && menu.roles.includes(userRole as any)) {
-      return true
-    }
-    
-    return false
-  }).map(menu => {
-    // 递归过滤子菜单
-    if (menu.children && menu.children.length > 0) {
-      return {
-        ...menu,
-        children: filterMenusByRole(menu.children, userRole)
+  return menus
+    .filter(menu => {
+      // 如果菜单没有角色限制，则显示
+      if (!menu.roles || menu.roles.length === 0) {
+        return true
       }
-    }
-    return menu
-  })
+
+      // 检查用户角色是否匹配
+      if (userRole && menu.roles.includes(userRole as any)) {
+        return true
+      }
+
+      return false
+    })
+    .map(menu => {
+      // 递归过滤子菜单
+      if (menu.children && menu.children.length > 0) {
+        return {
+          ...menu,
+          children: filterMenusByRole(menu.children, userRole)
+        }
+      }
+      return menu
+    })
 }
 
 /**
@@ -145,7 +147,7 @@ export function findMenuByPath(menus: MenuItem[], path: string): MenuItem | null
     if (menu.path === path) {
       return menu
     }
-    
+
     if (menu.children && menu.children.length > 0) {
       const found = findMenuByPath(menu.children, path)
       if (found) {
@@ -153,6 +155,6 @@ export function findMenuByPath(menus: MenuItem[], path: string): MenuItem | null
       }
     }
   }
-  
+
   return null
-} 
+}

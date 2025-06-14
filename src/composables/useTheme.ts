@@ -43,7 +43,7 @@ export function useTheme() {
    */
   const applyTheme = (dark: boolean) => {
     const html = document.documentElement
-    
+
     if (dark) {
       html.classList.add('dark')
       html.setAttribute('data-theme', 'dark')
@@ -51,7 +51,7 @@ export function useTheme() {
       html.classList.remove('dark')
       html.setAttribute('data-theme', 'light')
     }
-    
+
     isDark.value = dark
   }
 
@@ -61,9 +61,9 @@ export function useTheme() {
    */
   const updateTheme = (theme: ThemeMode) => {
     currentTheme.value = theme
-    
+
     let shouldBeDark = false
-    
+
     switch (theme) {
       case 'dark':
         shouldBeDark = true
@@ -75,9 +75,9 @@ export function useTheme() {
         shouldBeDark = getSystemTheme()
         break
     }
-    
+
     applyTheme(shouldBeDark)
-    
+
     // 保存到本地存储
     localStorage.setItem(STORAGE_KEYS.THEME, theme)
   }
@@ -123,9 +123,9 @@ export function useTheme() {
     // 从本地存储读取主题设置
     const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) as ThemeMode
     const theme = savedTheme || THEME_CONFIG.LIGHT
-    
+
     updateTheme(theme)
-    
+
     // 监听系统主题变化
     if (window.matchMedia) {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
@@ -140,7 +140,7 @@ export function useTheme() {
   /**
    * 监听主题变化
    */
-  watch(currentTheme, (newTheme) => {
+  watch(currentTheme, newTheme => {
     updateTheme(newTheme)
   })
 
@@ -148,14 +148,14 @@ export function useTheme() {
     // 状态
     currentTheme: readonly(currentTheme),
     isDark: readonly(isDark),
-    
+
     // 计算属性
     themeLabel,
     themeIcon,
-    
+
     // 方法
     updateTheme,
     toggleTheme,
     initTheme
   }
-} 
+}

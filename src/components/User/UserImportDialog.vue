@@ -103,13 +103,15 @@
               </el-col>
               <el-col :span="8">
                 <div class="result-item total">
-                  <div class="result-number">{{ importResult.successCount + importResult.failureCount }}</div>
+                  <div class="result-number">
+                    {{ importResult.successCount + importResult.failureCount }}
+                  </div>
                   <div class="result-label">{{ t('userManagement.import.totalCount') }}</div>
                 </div>
               </el-col>
             </el-row>
           </div>
-          
+
           <!-- 失败详情 -->
           <div v-if="importResult.failureCount > 0" class="failure-details">
             <h4>{{ t('userManagement.import.failureDetails') }}</h4>
@@ -129,11 +131,7 @@
                 :label="t('userManagement.form.realName')"
                 width="120"
               />
-              <el-table-column
-                prop="email"
-                :label="t('userManagement.form.email')"
-                width="180"
-              />
+              <el-table-column prop="email" :label="t('userManagement.form.email')" width="180" />
               <el-table-column
                 prop="reason"
                 :label="t('userManagement.import.errorReason')"
@@ -147,10 +145,7 @@
 
     <template #footer>
       <div class="dialog-footer">
-        <el-button
-          v-if="currentStep > 0"
-          @click="handlePrevious"
-        >
+        <el-button v-if="currentStep > 0" @click="handlePrevious">
           {{ t('common.previous') }}
         </el-button>
         <el-button @click="handleClose">
@@ -171,246 +166,247 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { ElMessage, type UploadInstance, type UploadFile } from 'element-plus'
-import { Download, UploadFilled, Document } from '@element-plus/icons-vue'
-import { useI18n } from '@/composables/useI18n'
-import { userMockApi } from '@/api/mock/userMock'
-import type { UserImportResult } from '@/types/user'
+  import { ref, computed } from 'vue'
+  import { ElMessage, type UploadInstance, type UploadFile } from 'element-plus'
+  import { Download, UploadFilled, Document } from '@element-plus/icons-vue'
+  import { useI18n } from '@/composables/useI18n'
+  import { userMockApi } from '@/api/mock/userMock'
+  import type { UserImportResult } from '@/types/user'
 
-interface Props {
-  visible: boolean
-}
-
-interface Emits {
-  (e: 'update:visible', value: boolean): void
-  (e: 'success'): void
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-const { t } = useI18n()
-
-// 响应式数据
-const uploadRef = ref<UploadInstance>()
-const currentStep = ref(0)
-const selectedFile = ref<File | null>(null)
-const importing = ref(false)
-const importResult = ref<UserImportResult | null>(null)
-
-// 计算属性
-const dialogVisible = computed({
-  get: () => props.visible,
-  set: (value) => emit('update:visible', value)
-})
-
-const canNextStep = computed(() => {
-  if (currentStep.value === 0) return true
-  if (currentStep.value === 1) return selectedFile.value !== null
-  return false
-})
-
-// 方法
-const handleDownloadTemplate = async () => {
-  try {
-    ElMessage.info(t('userManagement.import.downloadingTemplate'))
-    // 这里应该调用真实的模板下载API
-    // const blob = await userApi.downloadTemplate()
-    // downloadFile(blob, 'user_import_template.xlsx')
-    setTimeout(() => {
-      ElMessage.success(t('userManagement.import.downloadTemplateSuccess'))
-    }, 1000)
-  } catch (error) {
-    ElMessage.error(t('userManagement.import.downloadTemplateError'))
+  interface Props {
+    visible: boolean
   }
-}
 
-const beforeUpload = (file: File) => {
-  const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
-                  file.type === 'application/vnd.ms-excel'
-  const isLt10M = file.size / 1024 / 1024 < 10
+  interface Emits {
+    (e: 'update:visible', value: boolean): void
+    (e: 'success'): void
+  }
 
-  if (!isExcel) {
-    ElMessage.error(t('userManagement.import.fileTypeError'))
+  const props = defineProps<Props>()
+  const emit = defineEmits<Emits>()
+
+  const { t } = useI18n()
+
+  // 响应式数据
+  const uploadRef = ref<UploadInstance>()
+  const currentStep = ref(0)
+  const selectedFile = ref<File | null>(null)
+  const importing = ref(false)
+  const importResult = ref<UserImportResult | null>(null)
+
+  // 计算属性
+  const dialogVisible = computed({
+    get: () => props.visible,
+    set: value => emit('update:visible', value)
+  })
+
+  const canNextStep = computed(() => {
+    if (currentStep.value === 0) return true
+    if (currentStep.value === 1) return selectedFile.value !== null
     return false
-  }
-  if (!isLt10M) {
-    ElMessage.error(t('userManagement.import.fileSizeError'))
-    return false
-  }
-  return false // 阻止自动上传
-}
+  })
 
-const handleFileChange = (file: UploadFile) => {
-  if (file.raw) {
-    selectedFile.value = file.raw
-  }
-}
-
-const handleImport = async () => {
-  if (!selectedFile.value) return
-
-  try {
-    importing.value = true
-    importResult.value = await userMockApi.import(selectedFile.value)
-    currentStep.value = 2
-    
-    if (importResult.value.successCount > 0) {
-      emit('success')
+  // 方法
+  const handleDownloadTemplate = async () => {
+    try {
+      ElMessage.info(t('userManagement.import.downloadingTemplate'))
+      // 这里应该调用真实的模板下载API
+      // const blob = await userApi.downloadTemplate()
+      // downloadFile(blob, 'user_import_template.xlsx')
+      setTimeout(() => {
+        ElMessage.success(t('userManagement.import.downloadTemplateSuccess'))
+      }, 1000)
+    } catch (error) {
+      ElMessage.error(t('userManagement.import.downloadTemplateError'))
     }
-  } catch (error) {
-    ElMessage.error(t('userManagement.import.importError'))
-    console.error('导入用户失败:', error)
-  } finally {
+  }
+
+  const beforeUpload = (file: File) => {
+    const isExcel =
+      file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+      file.type === 'application/vnd.ms-excel'
+    const isLt10M = file.size / 1024 / 1024 < 10
+
+    if (!isExcel) {
+      ElMessage.error(t('userManagement.import.fileTypeError'))
+      return false
+    }
+    if (!isLt10M) {
+      ElMessage.error(t('userManagement.import.fileSizeError'))
+      return false
+    }
+    return false // 阻止自动上传
+  }
+
+  const handleFileChange = (file: UploadFile) => {
+    if (file.raw) {
+      selectedFile.value = file.raw
+    }
+  }
+
+  const handleImport = async () => {
+    if (!selectedFile.value) return
+
+    try {
+      importing.value = true
+      importResult.value = await userMockApi.import(selectedFile.value)
+      currentStep.value = 2
+
+      if (importResult.value.successCount > 0) {
+        emit('success')
+      }
+    } catch (error) {
+      ElMessage.error(t('userManagement.import.importError'))
+      console.error('导入用户失败:', error)
+    } finally {
+      importing.value = false
+    }
+  }
+
+  const handleNextStep = async () => {
+    if (currentStep.value === 0) {
+      currentStep.value = 1
+    } else if (currentStep.value === 1) {
+      await handleImport()
+    }
+  }
+
+  const handlePrevStep = () => {
+    if (currentStep.value > 0) {
+      currentStep.value--
+    }
+  }
+
+  const handleClose = () => {
+    dialogVisible.value = false
+    resetDialog()
+  }
+
+  const resetDialog = () => {
+    currentStep.value = 0
+    selectedFile.value = null
     importing.value = false
+    importResult.value = null
+    uploadRef.value?.clearFiles()
   }
-}
-
-const handleNextStep = async () => {
-  if (currentStep.value === 0) {
-    currentStep.value = 1
-  } else if (currentStep.value === 1) {
-    await handleImport()
-  }
-}
-
-const handlePrevStep = () => {
-  if (currentStep.value > 0) {
-    currentStep.value--
-  }
-}
-
-const handleClose = () => {
-  dialogVisible.value = false
-  resetDialog()
-}
-
-const resetDialog = () => {
-  currentStep.value = 0
-  selectedFile.value = null
-  importing.value = false
-  importResult.value = null
-  uploadRef.value?.clearFiles()
-}
 </script>
 
 <style scoped>
-.import-content {
-  padding: 20px 0;
-}
+  .import-content {
+    padding: 20px 0;
+  }
 
-.step-content {
-  margin-top: 30px;
-  min-height: 300px;
-}
+  .step-content {
+    margin-top: 30px;
+    min-height: 300px;
+  }
 
-.step-description {
-  margin-bottom: 20px;
-  text-align: center;
-}
+  .step-description {
+    margin-bottom: 20px;
+    text-align: center;
+  }
 
-.step-description h3 {
-  margin: 0 0 10px 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--el-text-color-primary);
-}
+  .step-description h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+  }
 
-.step-description p {
-  margin: 0;
-  color: var(--el-text-color-regular);
-}
+  .step-description p {
+    margin: 0;
+    color: var(--el-text-color-regular);
+  }
 
-.template-download {
-  text-align: center;
-  margin-bottom: 20px;
-}
+  .template-download {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-.template-tips {
-  margin-top: 20px;
-}
+  .template-tips {
+    margin-top: 20px;
+  }
 
-.template-tips ul {
-  margin: 10px 0 0 0;
-  padding-left: 20px;
-}
+  .template-tips ul {
+    margin: 10px 0 0 0;
+    padding-left: 20px;
+  }
 
-.template-tips li {
-  margin-bottom: 5px;
-  color: var(--el-text-color-regular);
-}
+  .template-tips li {
+    margin-bottom: 5px;
+    color: var(--el-text-color-regular);
+  }
 
-.file-upload {
-  margin-bottom: 20px;
-}
+  .file-upload {
+    margin-bottom: 20px;
+  }
 
-.selected-file {
-  text-align: center;
-}
+  .selected-file {
+    text-align: center;
+  }
 
-.import-result {
-  margin-top: 20px;
-}
+  .import-result {
+    margin-top: 20px;
+  }
 
-.result-summary {
-  margin-bottom: 30px;
-}
+  .result-summary {
+    margin-bottom: 30px;
+  }
 
-.result-item {
-  text-align: center;
-  padding: 20px;
-  border-radius: 8px;
-  background: var(--el-bg-color-page);
-}
+  .result-item {
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    background: var(--el-bg-color-page);
+  }
 
-.result-item.success {
-  border-left: 4px solid var(--el-color-success);
-}
+  .result-item.success {
+    border-left: 4px solid var(--el-color-success);
+  }
 
-.result-item.error {
-  border-left: 4px solid var(--el-color-danger);
-}
+  .result-item.error {
+    border-left: 4px solid var(--el-color-danger);
+  }
 
-.result-item.total {
-  border-left: 4px solid var(--el-color-primary);
-}
+  .result-item.total {
+    border-left: 4px solid var(--el-color-primary);
+  }
 
-.result-number {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
+  .result-number {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
 
-.result-item.success .result-number {
-  color: var(--el-color-success);
-}
+  .result-item.success .result-number {
+    color: var(--el-color-success);
+  }
 
-.result-item.error .result-number {
-  color: var(--el-color-danger);
-}
+  .result-item.error .result-number {
+    color: var(--el-color-danger);
+  }
 
-.result-item.total .result-number {
-  color: var(--el-color-primary);
-}
+  .result-item.total .result-number {
+    color: var(--el-color-primary);
+  }
 
-.result-label {
-  font-size: 14px;
-  color: var(--el-text-color-regular);
-}
+  .result-label {
+    font-size: 14px;
+    color: var(--el-text-color-regular);
+  }
 
-.failure-details {
-  margin-top: 20px;
-}
+  .failure-details {
+    margin-top: 20px;
+  }
 
-.failure-details h4 {
-  margin: 0 0 15px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--el-text-color-primary);
-}
+  .failure-details h4 {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+  }
 
-.dialog-footer {
-  text-align: right;
-}
-</style> 
+  .dialog-footer {
+    text-align: right;
+  }
+</style>

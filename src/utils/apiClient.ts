@@ -6,11 +6,11 @@
  * @version 1.0.0
  */
 
-import axios, { 
-  type AxiosInstance, 
-  type AxiosRequestConfig, 
+import axios, {
+  type AxiosInstance,
+  type AxiosRequestConfig,
   type AxiosResponse,
-  type AxiosError 
+  type AxiosError
 } from 'axios'
 import { ElMessage } from 'element-plus'
 import type { ApiResponse } from '@/types'
@@ -46,32 +46,32 @@ class ErrorHandler {
    */
   handle(error: AxiosError<ApiResponse>): Promise<never> {
     let message = '请求失败'
-    
+
     if (error.response) {
       const { status, data } = error.response
-      
+
       switch (status) {
         case HTTP_STATUS.UNAUTHORIZED:
           message = '登录已过期，请重新登录'
           this.handleUnauthorized()
           break
-          
+
         case HTTP_STATUS.FORBIDDEN:
           message = '没有权限访问该资源'
           break
-          
+
         case HTTP_STATUS.NOT_FOUND:
           message = '请求的资源不存在'
           break
-          
+
         case HTTP_STATUS.TOO_MANY_REQUESTS:
           message = '请求过于频繁，请稍后重试'
           break
-          
+
         case HTTP_STATUS.INTERNAL_SERVER_ERROR:
           message = '服务器内部错误，请稍后重试'
           break
-          
+
         default:
           message = data?.message || `请求失败 (${status})`
       }
@@ -80,10 +80,10 @@ class ErrorHandler {
     } else {
       message = error.message || '未知错误'
     }
-    
+
     return Promise.reject(new Error(message))
   }
-  
+
   /**
    * 处理未授权错误
    */
@@ -92,7 +92,7 @@ class ErrorHandler {
     localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN)
     localStorage.removeItem(STORAGE_KEYS.USER_INFO)
-    
+
     // 跳转到登录页
     setTimeout(() => {
       window.location.href = '/login'
@@ -115,7 +115,7 @@ export class ApiClient {
       timeout: API_CONFIG.TIMEOUT,
       headers: API_CONFIG.HEADERS
     })
-    
+
     this.setupInterceptors()
   }
 
@@ -125,20 +125,20 @@ export class ApiClient {
   private setupInterceptors() {
     // 请求拦截器
     this.instance.interceptors.request.use(
-      async (config) => {
+      async config => {
         // 添加认证 token
         await this.addAuthToken(config)
-        
+
         // 处理请求去重
         if ((config as RequestConfig).enableDedupe !== false) {
           this.handleRequestDedupe(config)
         }
-        
+
         // 处理加载状态
         if ((config as RequestConfig).showLoading) {
           this.startLoading(config)
         }
-        
+
         // 开发环境日志
         if (import.meta.env.DEV) {
           console.log('🚀 API请求:', {
@@ -148,10 +148,10 @@ export class ApiClient {
             data: config.data
           })
         }
-        
+
         return config
       },
-      (error) => {
+      error => {
         console.error('❌ 请求拦截器错误:', error)
         return Promise.reject(error)
       }
@@ -161,10 +161,10 @@ export class ApiClient {
     this.instance.interceptors.response.use(
       (response: AxiosResponse<ApiResponse>) => {
         const config = response.config as RequestConfig
-        
+
         // 清理请求队列
         this.cleanupRequest(config)
-        
+
         // 开发环境日志
         if (import.meta.env.DEV) {
           console.log('✅ API响应:', {
@@ -173,30 +173,30 @@ export class ApiClient {
             data: response.data
           })
         }
-        
+
         return response
       },
       async (error: AxiosError<ApiResponse>) => {
         const config = error.config as RequestConfig
-        
+
         // 清理请求队列
         if (config) {
           this.cleanupRequest(config)
         }
-        
+
         // 重试逻辑
         if (this.shouldRetry(error, config)) {
           return this.retryRequest(config)
         }
-        
+
         // 错误处理
         const handledError = await this.errorHandler.handle(error)
-        
+
         // 显示错误消息
         if (config?.showErrorMessage !== false) {
           ElMessage.error(handledError.message)
         }
-        
+
         return Promise.reject(handledError)
       }
     )
@@ -223,12 +223,12 @@ export class ApiClient {
    */
   private handleRequestDedupe(config: AxiosRequestConfig) {
     const requestKey = this.generateRequestKey(config)
-    
+
     // 取消重复请求
     if (this.requestQueue.has(requestKey)) {
       this.requestQueue.get(requestKey)?.abort()
     }
-    
+
     // 创建新的控制器
     const controller = new AbortController()
     config.signal = controller.signal
@@ -251,7 +251,7 @@ export class ApiClient {
   private startLoading(config: AxiosRequestConfig) {
     const requestKey = this.generateRequestKey(config)
     this.loadingRequests.add(requestKey)
-    
+
     // 这里可以集成全局加载状态管理
     // const uiStore = useUIStore()
     // uiStore.startLoading(requestKey)
@@ -262,14 +262,14 @@ export class ApiClient {
    */
   private cleanupRequest(config: AxiosRequestConfig) {
     const requestKey = this.generateRequestKey(config)
-    
+
     // 清理请求队列
     this.requestQueue.delete(requestKey)
-    
+
     // 清理加载状态
     if (this.loadingRequests.has(requestKey)) {
       this.loadingRequests.delete(requestKey)
-      
+
       // 这里可以集成全局加载状态管理
       // const uiStore = useUIStore()
       // uiStore.stopLoading(requestKey)
@@ -283,12 +283,11 @@ export class ApiClient {
     if (!config || config.retryCount === 0) {
       return false
     }
-    
+
     // 网络错误或服务器错误才重试
-    const shouldRetryStatus = !error.response || 
-      error.response.status >= 500 || 
-      error.response.status === 408
-    
+    const shouldRetryStatus =
+      !error.response || error.response.status >= 500 || error.response.status === 408
+
     return shouldRetryStatus && (config._retryCount || 0) < (config.retryCount || 0)
   }
 
@@ -297,13 +296,13 @@ export class ApiClient {
    */
   private async retryRequest(config: RequestConfig): Promise<AxiosResponse> {
     config._retryCount = (config._retryCount || 0) + 1
-    
+
     // 重试延迟
     const delay = config.retryDelay || 1000 * config._retryCount
     await new Promise(resolve => setTimeout(resolve, delay))
-    
+
     console.log(`正在重试请求 (${config._retryCount}/${config.retryCount}):`, config.url)
-    
+
     return this.instance.request(config)
   }
 

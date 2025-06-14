@@ -19,7 +19,7 @@ export const API_CONFIG = {
   /** 请求头配置 */
   HEADERS: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    Accept: 'application/json'
   }
 } as const
 
@@ -144,7 +144,11 @@ export const UPLOAD_CONFIG = {
   /** 允许的图片格式 */
   IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
   /** 允许的文档格式 */
-  DOCUMENT_TYPES: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+  DOCUMENT_TYPES: [
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+  ]
 } as const
 
 /**
@@ -167,4 +171,4 @@ export const LANGUAGE_CONFIG = {
   ZH_CN: 'zh-cn',
   /** 英文 */
   EN_US: 'en-us'
-} as const 
+} as const

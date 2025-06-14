@@ -56,7 +56,7 @@ export const UserStatus = {
   PENDING: 2
 } as const
 
-export type UserStatus = typeof UserStatus[keyof typeof UserStatus]
+export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
 
 /**
  * 登录表单接口
@@ -139,4 +139,4 @@ export interface RouteMeta extends Record<string | number | symbol, unknown> {
     title: string
     path: string
   }>
-} 
+}

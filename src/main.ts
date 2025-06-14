@@ -30,8 +30,6 @@ import { useTheme } from './composables/useTheme'
 // 导入认证状态管理
 import { useAuthStore } from './stores/auth'
 
-
-
 // 导入全局指令
 import setupDirectives from './directives'
 

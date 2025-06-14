@@ -7,7 +7,13 @@
  */
 
 import { apiClient } from '@/utils/apiClient'
-import type { 
+import {
+  systemMockApi,
+  configMockApi,
+  logMockApi,
+  testMockApi
+} from '@/api/mock/systemMock'
+import type {
   SystemInfo,
   SystemConfig,
   ConfigGroup,
@@ -22,70 +28,105 @@ import type {
 } from '@/types/system'
 
 /**
- * 系统信息API
+ * 是否使用模拟数据
  */
-export const systemApi = {
+const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+
+/**
+ * 获取API模式
+ */
+const getApiMode = () => USE_MOCK ? 'mock' : 'real'
+
+/**
+ * 真实系统信息API
+ */
+const realSystemApi = {
   /**
    * 获取系统信息
    * @returns 系统信息
    */
-  getInfo: (): Promise<SystemInfo> =>
-    apiClient.get('/api/system/info', {
+  getInfo: async (): Promise<SystemInfo> => {
+    const response = await apiClient.get('/api/system/info', {
       enableDedupe: true
-    }),
+    })
+    return response.data
+  },
 
   /**
    * 获取系统监控数据
    * @returns 监控数据
    */
-  getMonitor: (): Promise<SystemMonitor> =>
-    apiClient.get('/api/system/monitor'),
+  getMonitor: async (): Promise<SystemMonitor> => {
+    const response = await apiClient.get('/api/system/monitor')
+    return response.data
+  },
 
   /**
    * 重启系统
    * @returns 重启结果
    */
-  restart: (): Promise<void> =>
-    apiClient.post('/api/system/restart', {}, {
-      showLoading: true,
-      timeout: 30000
-    }),
+  restart: async (): Promise<void> => {
+    await apiClient.post(
+      '/api/system/restart',
+      {},
+      {
+        showLoading: true,
+        timeout: 30000
+      }
+    )
+  },
 
   /**
    * 清理缓存
    * @returns 清理结果
    */
-  clearCache: (): Promise<void> =>
-    apiClient.post('/api/system/clear-cache', {}, {
-      showLoading: true
-    }),
+  clearCache: async (): Promise<void> => {
+    await apiClient.post(
+      '/api/system/clear-cache',
+      {},
+      {
+        showLoading: true
+      }
+    )
+  },
 
   /**
    * 备份数据库
    * @returns 备份结果
    */
-  backupDatabase: (): Promise<{ filename: string; size: number }> =>
-    apiClient.post('/api/system/backup', {}, {
-      showLoading: true,
-      timeout: 60000
-    }),
+  backupDatabase: async (): Promise<{ filename: string; size: number }> => {
+    const response = await apiClient.post(
+      '/api/system/backup',
+      {},
+      {
+        showLoading: true,
+        timeout: 60000
+      }
+    )
+    return response.data
+  },
 
   /**
    * 恢复数据库
    * @param filename 备份文件名
    * @returns 恢复结果
    */
-  restoreDatabase: (filename: string): Promise<void> =>
-    apiClient.post('/api/system/restore', { filename }, {
-      showLoading: true,
-      timeout: 120000
-    })
+  restoreDatabase: async (filename: string): Promise<void> => {
+    await apiClient.post(
+      '/api/system/restore',
+      { filename },
+      {
+        showLoading: true,
+        timeout: 120000
+      }
+    )
+  }
 }
 
 /**
- * 系统配置API
+ * 真实系统配置API
  */
-export const configApi = {
+const realConfigApi = {
   /**
    * 获取所有配置
    * @returns 配置列表
@@ -119,8 +160,7 @@ export const configApi = {
    * @param key 配置键
    * @returns 配置值
    */
-  get: (key: string): Promise<string> =>
-    apiClient.get(`/api/system/config/${key}`),
+  get: (key: string): Promise<string> => apiClient.get(`/api/system/config/${key}`),
 
   /**
    * 更新配置
@@ -139,9 +179,13 @@ export const configApi = {
    * @returns 重置结果
    */
   reset: (keys: string[]): Promise<void> =>
-    apiClient.post('/api/system/configs/reset', { keys }, {
-      showLoading: true
-    }),
+    apiClient.post(
+      '/api/system/configs/reset',
+      { keys },
+      {
+        showLoading: true
+      }
+    ),
 
   /**
    * 导出配置
@@ -170,21 +214,22 @@ export const configApi = {
 }
 
 /**
- * 系统日志API
+ * 真实系统日志API
  */
-export const logApi = {
+const realLogApi = {
   /**
    * 获取系统日志
    * @param params 查询参数
    * @returns 日志列表
    */
-  getList: (params: SystemLogQuery): Promise<{
+  getList: (
+    params: SystemLogQuery
+  ): Promise<{
     list: SystemLog[]
     total: number
     page: number
     pageSize: number
-  }> =>
-    apiClient.get('/api/system/logs', { params }),
+  }> => apiClient.get('/api/system/logs', { params }),
 
   /**
    * 清理日志
@@ -192,9 +237,13 @@ export const logApi = {
    * @returns 清理结果
    */
   clear: (days: number): Promise<{ deletedCount: number }> =>
-    apiClient.post('/api/system/logs/clear', { days }, {
-      showLoading: true
-    }),
+    apiClient.post(
+      '/api/system/logs/clear',
+      { days },
+      {
+        showLoading: true
+      }
+    ),
 
   /**
    * 导出日志
@@ -209,9 +258,9 @@ export const logApi = {
 }
 
 /**
- * 测试API
+ * 真实测试API
  */
-export const testApi = {
+const realTestApi = {
   /**
    * 测试邮件发送
    * @param config 邮件配置
@@ -256,9 +305,9 @@ export const testApi = {
 }
 
 /**
- * 安全配置API
+ * 真实安全配置API
  */
-export const securityApi = {
+const realSecurityApi = {
   /**
    * 获取安全配置
    * @returns 安全配置
@@ -301,6 +350,40 @@ export const securityApi = {
       loginTime: string
     }>
     total: number
-  }> =>
-    apiClient.get('/api/system/login-logs', { params })
+  }> => apiClient.get('/api/system/login-logs', { params })
+}
+
+/**
+ * 导出系统管理API（根据环境选择真实或模拟）
+ */
+export const systemApi = USE_MOCK ? systemMockApi : realSystemApi
+
+/**
+ * 导出配置管理API（根据环境选择真实或模拟）
+ */
+export const configApi = USE_MOCK ? configMockApi : realConfigApi
+
+/**
+ * 导出日志管理API（根据环境选择真实或模拟）
+ */
+export const logApi = USE_MOCK ? logMockApi : realLogApi
+
+/**
+ * 导出测试API（根据环境选择真实或模拟）
+ */
+export const testApi = USE_MOCK ? testMockApi : realTestApi
+
+/**
+ * 导出安全配置API（暂时只有真实API）
+ */
+export const securityApi = realSecurityApi
+
+/**
+ * 打印当前API配置信息（仅开发环境）
+ */
+if (import.meta.env.DEV) {
+  console.log(`🔧 系统API模式: ${getApiMode()}`)
+  console.log(`🔧 配置API模式: ${getApiMode()}`)
+  console.log(`🔧 日志API模式: ${getApiMode()}`)
+  console.log(`🔧 测试API模式: ${getApiMode()}`)
 }

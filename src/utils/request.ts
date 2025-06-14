@@ -27,7 +27,7 @@ const request = axios.create({
  * @description 在请求发送前添加认证token、请求日志等
  */
 request.interceptors.request.use(
-  async (config) => {
+  async config => {
     // 添加认证token
     try {
       const tokenManager = getTokenManager()
@@ -65,7 +65,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response: AxiosResponse<ApiResponse>) => {
     const { data } = response
-    
+
     // 开发环境下打印响应信息
     if (import.meta.env.DEV) {
       console.log('✅ 响应接收:', {
@@ -74,25 +74,25 @@ request.interceptors.response.use(
         data: data
       })
     }
-    
+
     // 检查业务状态码
     if (data.success) {
       return response
     }
-    
+
     // 业务错误处理
     ElMessage.error(data.message || '请求失败')
     return Promise.reject(new Error(data.message || '请求失败'))
   },
   (error: AxiosError<ApiResponse>) => {
     console.error('❌ 响应错误:', error)
-    
+
     // 处理HTTP错误状态码
     let message = '请求失败'
-    
+
     if (error.response) {
       const { status, data } = error.response
-      
+
       switch (status) {
         case HTTP_STATUS.UNAUTHORIZED:
           message = '登录已过期，请重新登录'
@@ -103,19 +103,19 @@ request.interceptors.response.use(
           // 跳转到登录页
           window.location.href = '/login'
           break
-          
+
         case HTTP_STATUS.FORBIDDEN:
           message = '没有权限访问该资源'
           break
-          
+
         case HTTP_STATUS.NOT_FOUND:
           message = '请求的资源不存在'
           break
-          
+
         case HTTP_STATUS.INTERNAL_SERVER_ERROR:
           message = '服务器内部错误，请稍后重试'
           break
-          
+
         default:
           message = data?.message || `请求失败 (${status})`
       }
@@ -126,7 +126,7 @@ request.interceptors.response.use(
       // 其他错误
       message = error.message || '未知错误'
     }
-    
+
     ElMessage.error(message)
     return Promise.reject(error)
   }
@@ -149,7 +149,11 @@ export const get = <T = any>(url: string, config?: AxiosRequestConfig): Promise<
  * @param config 请求配置
  * @returns Promise<ApiResponse>
  */
-export const post = <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+export const post = <T = any>(
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfig
+): Promise<ApiResponse<T>> => {
   return request.post(url, data, config)
 }
 
@@ -160,7 +164,11 @@ export const post = <T = any>(url: string, data?: any, config?: AxiosRequestConf
  * @param config 请求配置
  * @returns Promise<ApiResponse>
  */
-export const put = <T = any>(url: string, data?: any, config?: AxiosRequestConfig): Promise<ApiResponse<T>> => {
+export const put = <T = any>(
+  url: string,
+  data?: any,
+  config?: AxiosRequestConfig
+): Promise<ApiResponse<T>> => {
   return request.put(url, data, config)
 }
 
@@ -182,18 +190,18 @@ export const del = <T = any>(url: string, config?: AxiosRequestConfig): Promise<
  * @returns Promise<ApiResponse>
  */
 export const upload = <T = any>(
-  url: string, 
-  file: File, 
+  url: string,
+  file: File,
   onProgress?: (progress: number) => void
 ): Promise<ApiResponse<T>> => {
   const formData = new FormData()
   formData.append('file', file)
-  
+
   return request.post(url, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     },
-    onUploadProgress: (progressEvent) => {
+    onUploadProgress: progressEvent => {
       if (onProgress && progressEvent.total) {
         const progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
         onProgress(progress)
@@ -202,4 +210,4 @@ export const upload = <T = any>(
   })
 }
 
-export default request 
+export default request

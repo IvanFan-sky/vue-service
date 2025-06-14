@@ -384,7 +384,8 @@ const messages = {
     // User Management
     userManagement: {
       title: 'User Management',
-      description: 'Manage system users, including CRUD operations, batch operations, import/export functions',
+      description:
+        'Manage system users, including CRUD operations, batch operations, import/export functions',
       search: {
         placeholder: 'Search username, name, email, phone',
         role: 'Role',
@@ -515,7 +516,8 @@ const messages = {
         step2: 'Upload File',
         step3: 'Import Result',
         downloadTemplate: 'Download Import Template',
-        downloadTemplateDesc: 'Please download the user import template first and fill in user information according to the template format',
+        downloadTemplateDesc:
+          'Please download the user import template first and fill in user information according to the template format',
         downloadTemplateBtn: 'Download Template File',
         templateTips: 'Template Usage Instructions',
         tip1: 'Please strictly follow the template format to fill in user information',
@@ -585,7 +587,7 @@ const elementPlusLocale: Ref<ElementPlusLanguage> = computed(() => {
 const t = (key: string, params?: Record<string, any>): string => {
   const keys = key.split('.')
   let value: any = messages[currentLanguage.value]
-  
+
   for (const k of keys) {
     if (value && typeof value === 'object' && k in value) {
       value = value[k]
@@ -594,19 +596,19 @@ const t = (key: string, params?: Record<string, any>): string => {
       return key
     }
   }
-  
+
   if (typeof value !== 'string') {
     console.warn(`Translation key "${key}" does not resolve to a string`)
     return key
   }
-  
+
   // 简单的字符串插值
   if (params) {
     return value.replace(/\{(\w+)\}/g, (match, paramKey) => {
       return params[paramKey] !== undefined ? String(params[paramKey]) : match
     })
   }
-  
+
   return value
 }
 
@@ -617,7 +619,7 @@ const t = (key: string, params?: Record<string, any>): string => {
 const switchLanguage = (language: Language) => {
   currentLanguage.value = language
   localStorage.setItem('language', language)
-  
+
   // 更新HTML lang属性
   document.documentElement.lang = language === 'zh-cn' ? 'zh-CN' : 'en-US'
 }
@@ -638,7 +640,7 @@ const getAvailableLanguages = () => {
 const initLanguage = () => {
   // 从localStorage获取保存的语言
   const savedLanguage = localStorage.getItem('language') as Language
-  
+
   if (savedLanguage && ['zh-cn', 'en-us'].includes(savedLanguage)) {
     currentLanguage.value = savedLanguage
   } else {
@@ -650,16 +652,20 @@ const initLanguage = () => {
       currentLanguage.value = 'en-us'
     }
   }
-  
+
   // 设置HTML lang属性
   document.documentElement.lang = currentLanguage.value === 'zh-cn' ? 'zh-CN' : 'en-US'
 }
 
 // 监听语言变化，自动保存到localStorage
-watch(currentLanguage, (newLanguage) => {
-  localStorage.setItem('language', newLanguage)
-  document.documentElement.lang = newLanguage === 'zh-cn' ? 'zh-CN' : 'en-US'
-}, { immediate: false })
+watch(
+  currentLanguage,
+  newLanguage => {
+    localStorage.setItem('language', newLanguage)
+    document.documentElement.lang = newLanguage === 'zh-cn' ? 'zh-CN' : 'en-US'
+  },
+  { immediate: false }
+)
 
 // 初始化语言
 initLanguage()
@@ -673,11 +679,11 @@ export function useI18n() {
     currentLanguage: readonly(currentLanguage),
     languageLabel,
     elementPlusLocale,
-    
+
     // 方法
     t,
     switchLanguage,
     getAvailableLanguages,
     initLanguage
   }
-} 
+}

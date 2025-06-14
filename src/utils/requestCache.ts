@@ -24,7 +24,7 @@ interface CacheConfig {
 export class RequestCache {
   private cache = new Map<string, CacheItem>()
   private maxSize = 100
-  
+
   private readonly cacheConfig: Record<string, CacheConfig> = {
     user: { maxAge: 10 * 60 * 1000, priority: 'high' }, // 10分钟
     dashboard: { maxAge: 5 * 60 * 1000, priority: 'medium' }, // 5分钟
@@ -42,22 +42,22 @@ export class RequestCache {
   get(key: string, type: keyof typeof this.cacheConfig = 'list'): any {
     const item = this.cache.get(key)
     const config = this.cacheConfig[type]
-    
+
     if (!item) {
       return null
     }
-    
+
     const now = Date.now()
-    
+
     // 检查是否过期
     if (now > item.expiresAt) {
       this.cache.delete(key)
       return null
     }
-    
+
     // 更新访问时间
     item.lastAccess = now
-    
+
     return item.data
   }
 
@@ -70,12 +70,12 @@ export class RequestCache {
   set(key: string, data: any, type: keyof typeof this.cacheConfig = 'list'): void {
     const config = this.cacheConfig[type]
     const now = Date.now()
-    
+
     // 检查缓存大小限制
     if (this.cache.size >= this.maxSize) {
       this.evictLRU()
     }
-    
+
     const item: CacheItem = {
       data,
       timestamp: now,
@@ -84,7 +84,7 @@ export class RequestCache {
       type,
       expiresAt: now + config.maxAge
     }
-    
+
     this.cache.set(key, item)
   }
 
@@ -107,13 +107,13 @@ export class RequestCache {
     if (!item) {
       return false
     }
-    
+
     const now = Date.now()
     if (now > item.expiresAt) {
       this.cache.delete(key)
       return false
     }
-    
+
     return true
   }
 
@@ -156,7 +156,7 @@ export class RequestCache {
     let oldestKey = ''
     let oldestTime = Date.now()
     let lowestPriority: 'high' | 'medium' | 'low' = 'high'
-    
+
     // 优先淘汰低优先级的缓存
     for (const [key, item] of this.cache.entries()) {
       if (item.priority === 'low' && item.lastAccess < oldestTime) {
@@ -165,7 +165,7 @@ export class RequestCache {
         lowestPriority = 'low'
       }
     }
-    
+
     // 如果没有低优先级的，淘汰中优先级的
     if (!oldestKey) {
       oldestTime = Date.now()
@@ -177,7 +177,7 @@ export class RequestCache {
         }
       }
     }
-    
+
     // 最后才淘汰高优先级的
     if (!oldestKey) {
       oldestTime = Date.now()
@@ -188,7 +188,7 @@ export class RequestCache {
         }
       }
     }
-    
+
     if (oldestKey) {
       this.cache.delete(oldestKey)
     }
@@ -207,12 +207,12 @@ export class RequestCache {
   } {
     const types: Record<string, number> = {}
     const priorities: Record<string, number> = {}
-    
+
     for (const item of this.cache.values()) {
       types[item.type] = (types[item.type] || 0) + 1
       priorities[item.priority] = (priorities[item.priority] || 0) + 1
     }
-    
+
     return {
       size: this.cache.size,
       maxSize: this.maxSize,
@@ -228,7 +228,7 @@ export class RequestCache {
    */
   setMaxSize(size: number): void {
     this.maxSize = size
-    
+
     // 如果当前缓存超过新的限制，进行清理
     while (this.cache.size > this.maxSize) {
       this.evictLRU()
@@ -251,8 +251,10 @@ export class RequestCache {
    * 预热缓存
    * @description 预先加载一些重要数据到缓存中
    */
-  async preload(preloadFunctions: Array<() => Promise<{ key: string; data: any; type: string }>>): Promise<void> {
-    const promises = preloadFunctions.map(async (fn) => {
+  async preload(
+    preloadFunctions: Array<() => Promise<{ key: string; data: any; type: string }>>
+  ): Promise<void> {
+    const promises = preloadFunctions.map(async fn => {
       try {
         const { key, data, type } = await fn()
         this.set(key, data, type as keyof typeof this.cacheConfig)
@@ -260,7 +262,7 @@ export class RequestCache {
         console.warn('缓存预热失败:', error)
       }
     })
-    
+
     await Promise.allSettled(promises)
   }
 }
@@ -269,8 +271,11 @@ export class RequestCache {
 export const requestCache = new RequestCache()
 
 // 定期清理过期缓存
-setInterval(() => {
-  requestCache.cleanExpired()
-}, 5 * 60 * 1000) // 每5分钟清理一次
+setInterval(
+  () => {
+    requestCache.cleanExpired()
+  },
+  5 * 60 * 1000
+) // 每5分钟清理一次
 
 export default requestCache

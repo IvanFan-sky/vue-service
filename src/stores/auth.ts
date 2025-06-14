@@ -17,18 +17,18 @@ export const useAuthStore = defineStore('auth', () => {
       // 兼容旧的存储键
       storedToken = localStorage.getItem('access_token')
     }
-    
+
     if (storedToken) {
       token.value = storedToken
     }
-    
+
     // 尝试从主要存储键恢复用户信息
     let savedUser = localStorage.getItem('user')
     if (!savedUser) {
       // 兼容旧的存储键
       savedUser = localStorage.getItem('user_info')
     }
-    
+
     if (savedUser) {
       try {
         user.value = JSON.parse(savedUser)
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const loginForm: LoginForm = { username, password }
       const response = await authApi.login(loginForm)
-      
+
       if (response.code === 200 && response.data) {
         token.value = response.data.token
         user.value = response.data.user
@@ -93,11 +93,11 @@ export const useAuthStore = defineStore('auth', () => {
       // 清除所有认证相关状态
       token.value = ''
       user.value = null
-      
+
       // 清除localStorage中的认证信息
       localStorage.removeItem('token')
       localStorage.removeItem('user')
-      
+
       // 清除可能存在的其他认证键（兼容性处理）
       localStorage.removeItem('access_token')
       localStorage.removeItem('user_info')
@@ -138,6 +138,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserInfo,
     hasRole,
     hasAllRoles,
-    hasAnyRole,
+    hasAnyRole
   }
-}) 
+})

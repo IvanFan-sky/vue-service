@@ -17,7 +17,7 @@ const routes: RouteRecordRaw[] = [
       title: '登录',
       requireAuth: false,
       hidden: true
-    } as RouteMeta,
+    } as RouteMeta
   },
   {
     path: '/',
@@ -43,7 +43,7 @@ const routes: RouteRecordRaw[] = [
           title: '仪表盘',
           icon: 'Dashboard',
           requireAuth: true
-        } as RouteMeta,
+        } as RouteMeta
       },
       {
         path: '/user/list',
@@ -59,7 +59,7 @@ const routes: RouteRecordRaw[] = [
             { title: '用户管理', path: '/user' },
             { title: '用户列表', path: '/user/list' }
           ]
-        } as RouteMeta,
+        } as RouteMeta
       },
       {
         path: '/user/profile',
@@ -75,7 +75,7 @@ const routes: RouteRecordRaw[] = [
             { title: '用户管理', path: '/user' },
             { title: '个人信息', path: '/user/profile' }
           ]
-        } as RouteMeta,
+        } as RouteMeta
       },
       {
         path: '/system/roles',
@@ -91,7 +91,7 @@ const routes: RouteRecordRaw[] = [
             { title: '系统管理', path: '/system' },
             { title: '角色管理', path: '/system/roles' }
           ]
-        } as RouteMeta,
+        } as RouteMeta
       },
       {
         path: '/system/settings',
@@ -107,9 +107,9 @@ const routes: RouteRecordRaw[] = [
             { title: '系统管理', path: '/system' },
             { title: '系统设置', path: '/system/settings' }
           ]
-        } as RouteMeta,
+        } as RouteMeta
       }
-    ],
+    ]
   },
   {
     path: '/:pathMatch(.*)*',
@@ -120,8 +120,8 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '页面不存在',
       hidden: true
-    } as RouteMeta,
-  },
+    } as RouteMeta
+  }
 ]
 
 // 创建路由实例
@@ -134,13 +134,13 @@ const router = createRouter({
     } else {
       return { top: 0 }
     }
-  },
+  }
 })
 
 // 路由前置守卫
 router.beforeEach(async (to, _from, next) => {
   const authStore = useAuthStore()
-  
+
   // 设置页面标题
   if (to.meta?.['title']) {
     document.title = `${to.meta['title']} - Vue Service`
@@ -152,11 +152,11 @@ router.beforeEach(async (to, _from, next) => {
       // 未登录，跳转到登录页
       next({
         path: '/login',
-        query: { redirect: to.fullPath },
+        query: { redirect: to.fullPath }
       })
       return
     }
-    
+
     // 已登录但没有用户信息，获取用户信息
     if (!authStore.user) {
       try {
@@ -179,7 +179,7 @@ router.beforeEach(async (to, _from, next) => {
 })
 
 // 路由后置守卫
-router.afterEach((to) => {
+router.afterEach(to => {
   // 智能预加载相关路由
   const routePreloadMap: Record<string, string[]> = {
     '/login': ['/dashboard'],
@@ -196,4 +196,4 @@ router.afterEach((to) => {
   }
 })
 
-export default router 
+export default router

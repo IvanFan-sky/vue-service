@@ -40,4 +40,4 @@ export interface SidebarState {
   activeMenu: string
   /** 移动端是否显示 */
   mobileVisible: boolean
-} 
+}

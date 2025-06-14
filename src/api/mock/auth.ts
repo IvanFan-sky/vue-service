@@ -88,10 +88,10 @@ export const mockAuthApi = {
    */
   async login(loginForm: LoginForm) {
     await delay(800)
-    
+
     const { username, password } = loginForm
     const user = mockUsers.find(u => u.username === username)
-    
+
     if (!user) {
       return {
         code: 400,
@@ -101,7 +101,7 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     if (user.password !== password) {
       return {
         code: 400,
@@ -111,7 +111,7 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     if (user.status !== UserStatus.ACTIVE) {
       return {
         code: 403,
@@ -121,18 +121,18 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     // 生成Token
     const token = generateToken(user)
     const refreshToken = `refresh_${token}`
-    
+
     // 设置当前用户（移除密码字段）
     const { password: _, ...userWithoutPassword } = user
     currentUser = userWithoutPassword
-    
+
     // 存储Token
     localStorage.setItem('mock_current_token', token)
-    
+
     return {
       code: 200,
       message: '登录成功',
@@ -151,9 +151,9 @@ export const mockAuthApi = {
    */
   async getUserInfo() {
     await delay(300)
-    
+
     const token = localStorage.getItem('mock_current_token')
-    
+
     if (!token || !token.startsWith('mock_token_')) {
       return {
         code: 401,
@@ -163,7 +163,7 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     if (!currentUser) {
       return {
         code: 404,
@@ -173,7 +173,7 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     return {
       code: 200,
       message: '获取用户信息成功',
@@ -188,10 +188,10 @@ export const mockAuthApi = {
    */
   async logout() {
     await delay(300)
-    
+
     currentUser = null
     localStorage.removeItem('mock_current_token')
-    
+
     return {
       code: 200,
       message: '登出成功',
@@ -206,7 +206,7 @@ export const mockAuthApi = {
    */
   async refreshToken(refreshToken: string) {
     await delay(500)
-    
+
     if (!refreshToken || !refreshToken.startsWith('refresh_mock_token_')) {
       return {
         code: 401,
@@ -216,7 +216,7 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     if (!currentUser) {
       return {
         code: 404,
@@ -226,12 +226,12 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     const newToken = generateToken(currentUser)
     const newRefreshToken = `refresh_${newToken}`
-    
+
     localStorage.setItem('mock_current_token', newToken)
-    
+
     return {
       code: 200,
       message: 'Token刷新成功',
@@ -249,9 +249,9 @@ export const mockAuthApi = {
    */
   async changePassword(data: { oldPassword: string; newPassword: string }) {
     await delay(600)
-    
+
     const token = localStorage.getItem('mock_current_token')
-    
+
     if (!token || !currentUser) {
       return {
         code: 401,
@@ -261,7 +261,7 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     const user = mockUsers.find(u => u.id === currentUser!.id)
     if (!user || user.password !== data.oldPassword) {
       return {
@@ -272,10 +272,10 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     user.password = data.newPassword
     user.updatedAt = new Date().toISOString()
-    
+
     return {
       code: 200,
       message: '密码修改成功',
@@ -290,9 +290,9 @@ export const mockAuthApi = {
    */
   async resetPassword(data: { email: string }) {
     await delay(1000)
-    
+
     const user = mockUsers.find(u => u.email === data.email)
-    
+
     if (!user) {
       return {
         code: 404,
@@ -302,9 +302,9 @@ export const mockAuthApi = {
         timestamp: Date.now()
       }
     }
-    
+
     console.log(`模拟发送密码重置邮件到: ${data.email}`)
-    
+
     return {
       code: 200,
       message: '密码重置邮件已发送，请查收',
@@ -323,4 +323,4 @@ export const getMockUsers = () => {
     const { password, ...userWithoutPassword } = user
     return userWithoutPassword
   })
-} 
+}

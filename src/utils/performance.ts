@@ -21,18 +21,18 @@ export function debounce<T extends (...args: any[]) => any>(
   immediate = false
 ): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout | null = null
-  
+
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
       timeout = null
       if (!immediate) func(...args)
     }
-    
+
     const callNow = immediate && !timeout
-    
+
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(later, wait)
-    
+
     if (callNow) func(...args)
   }
 }
@@ -48,12 +48,12 @@ export function throttle<T extends (...args: any[]) => any>(
   limit: number
 ): (...args: Parameters<T>) => void {
   let inThrottle: boolean
-  
+
   return function executedFunction(...args: Parameters<T>) {
     if (!inThrottle) {
       func.apply(this, args)
       inThrottle = true
-      setTimeout(() => inThrottle = false, limit)
+      setTimeout(() => (inThrottle = false), limit)
     }
   }
 }
@@ -65,7 +65,7 @@ export function throttle<T extends (...args: any[]) => any>(
  */
 export function useCleanup() {
   const cleanupFunctions: (() => void)[] = []
-  
+
   /**
    * 添加清理函数
    * @param fn 清理函数
@@ -73,7 +73,7 @@ export function useCleanup() {
   const addCleanup = (fn: () => void) => {
     cleanupFunctions.push(fn)
   }
-  
+
   /**
    * 执行所有清理函数
    */
@@ -87,10 +87,10 @@ export function useCleanup() {
     })
     cleanupFunctions.length = 0
   }
-  
+
   // 组件卸载时自动清理
   onUnmounted(cleanup)
-  
+
   return { addCleanup, cleanup }
 }
 
@@ -100,12 +100,9 @@ export function useCleanup() {
  * @param delay 延迟时间
  * @returns 取消函数
  */
-export function createCancelableTimeout(
-  callback: () => void,
-  delay: number
-): () => void {
+export function createCancelableTimeout(callback: () => void, delay: number): () => void {
   const timeoutId = setTimeout(callback, delay)
-  
+
   return () => {
     clearTimeout(timeoutId)
   }
@@ -117,12 +114,9 @@ export function createCancelableTimeout(
  * @param interval 间隔时间
  * @returns 取消函数
  */
-export function createCancelableInterval(
-  callback: () => void,
-  interval: number
-): () => void {
+export function createCancelableInterval(callback: () => void, interval: number): () => void {
   const intervalId = setInterval(callback, interval)
-  
+
   return () => {
     clearInterval(intervalId)
   }
@@ -138,7 +132,7 @@ export function rafThrottle<T extends (...args: any[]) => any>(
   func: T
 ): (...args: Parameters<T>) => void {
   let rafId: number | null = null
-  
+
   return function executedFunction(...args: Parameters<T>) {
     if (rafId === null) {
       rafId = requestAnimationFrame(() => {
@@ -155,10 +149,7 @@ export function rafThrottle<T extends (...args: any[]) => any>(
  * @param func 要执行的函数
  * @param options 选项
  */
-export function runWhenIdle(
-  func: () => void,
-  options: { timeout?: number } = {}
-): void {
+export function runWhenIdle(func: () => void, options: { timeout?: number } = {}): void {
   if ('requestIdleCallback' in window) {
     requestIdleCallback(func, options)
   } else {
@@ -173,16 +164,14 @@ export function runWhenIdle(
  * @param batchSize 批次大小
  * @param delay 延迟时间
  */
-export function createBatchExecutor<T>(
-  batchSize = 10,
-  delay = 16
-) {
-  const queue: Array<{ func: () => T; resolve: (value: T) => void; reject: (error: any) => void }> = []
+export function createBatchExecutor<T>(batchSize = 10, delay = 16) {
+  const queue: Array<{ func: () => T; resolve: (value: T) => void; reject: (error: any) => void }> =
+    []
   let timeoutId: NodeJS.Timeout | null = null
-  
+
   const processBatch = () => {
     const batch = queue.splice(0, batchSize)
-    
+
     batch.forEach(({ func, resolve, reject }) => {
       try {
         const result = func()
@@ -191,25 +180,25 @@ export function createBatchExecutor<T>(
         reject(error)
       }
     })
-    
+
     if (queue.length > 0) {
       timeoutId = setTimeout(processBatch, delay)
     } else {
       timeoutId = null
     }
   }
-  
+
   return {
     add: (func: () => T): Promise<T> => {
       return new Promise((resolve, reject) => {
         queue.push({ func, resolve, reject })
-        
+
         if (!timeoutId) {
           timeoutId = setTimeout(processBatch, delay)
         }
       })
     },
-    
+
     clear: () => {
       queue.length = 0
       if (timeoutId) {
@@ -227,20 +216,22 @@ export function createBatchExecutor<T>(
 export function createMemoryMonitor() {
   let isMonitoring = false
   let intervalId: NodeJS.Timeout | null = null
-  
+
   const checkMemory = () => {
     if ('memory' in performance) {
       const memory = (performance as any).memory
       const usedMB = memory.usedJSHeapSize / 1024 / 1024
       const totalMB = memory.totalJSHeapSize / 1024 / 1024
       const limitMB = memory.jsHeapSizeLimit / 1024 / 1024
-      
+
       const usagePercent = (usedMB / limitMB) * 100
-      
+
       if (usagePercent > 80) {
-        console.warn(`内存使用率过高: ${usagePercent.toFixed(2)}% (${usedMB.toFixed(2)}MB / ${limitMB.toFixed(2)}MB)`)
+        console.warn(
+          `内存使用率过高: ${usagePercent.toFixed(2)}% (${usedMB.toFixed(2)}MB / ${limitMB.toFixed(2)}MB)`
+        )
       }
-      
+
       return {
         used: usedMB,
         total: totalMB,
@@ -248,10 +239,10 @@ export function createMemoryMonitor() {
         usagePercent
       }
     }
-    
+
     return null
   }
-  
+
   return {
     start: (interval = 10000) => {
       if (!isMonitoring) {
@@ -259,7 +250,7 @@ export function createMemoryMonitor() {
         intervalId = setInterval(checkMemory, interval)
       }
     },
-    
+
     stop: () => {
       if (isMonitoring && intervalId) {
         clearInterval(intervalId)
@@ -267,7 +258,7 @@ export function createMemoryMonitor() {
         isMonitoring = false
       }
     },
-    
+
     check: checkMemory
   }
 }
@@ -279,11 +270,11 @@ export function createMemoryMonitor() {
 export function usePerformanceMonitor() {
   const { addCleanup } = useCleanup()
   const memoryMonitor = createMemoryMonitor()
-  
+
   // 开始内存监控
   memoryMonitor.start()
   addCleanup(() => memoryMonitor.stop())
-  
+
   return {
     memoryMonitor,
     debounce,

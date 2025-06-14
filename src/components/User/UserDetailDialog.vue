@@ -124,7 +124,9 @@
           <el-col :span="8">
             <div class="info-item">
               <label>{{ t('userManagement.detail.lastLoginTime') }}:</label>
-              <span>{{ user.lastLoginTime ? formatDate(user.lastLoginTime) : t('common.never') }}</span>
+              <span>{{
+                user.lastLoginTime ? formatDate(user.lastLoginTime) : t('common.never')
+              }}</span>
             </div>
           </el-col>
         </el-row>
@@ -151,185 +153,185 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useI18n } from '@/composables/useI18n'
-import type { User, UserRole, UserStatus, UserGender } from '@/types/user'
+  import { computed } from 'vue'
+  import { useI18n } from '@/composables/useI18n'
+  import type { User, UserRole, UserStatus, UserGender } from '@/types/user'
 
-interface Props {
-  visible: boolean
-  user?: User | null
-}
-
-interface Emits {
-  (e: 'update:visible', value: boolean): void
-  (e: 'edit', user: User): void
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  user: null
-})
-
-const emit = defineEmits<Emits>()
-
-const { t } = useI18n()
-
-// 计算属性
-const dialogVisible = computed({
-  get: () => props.visible,
-  set: (value) => emit('update:visible', value)
-})
-
-// 方法
-const getRoleTagType = (role: UserRole) => {
-  const types = {
-    admin: 'danger',
-    user: 'primary',
-    guest: 'info'
+  interface Props {
+    visible: boolean
+    user?: User | null
   }
-  return types[role] || 'info'
-}
 
-const getRoleLabel = (role: UserRole) => {
-  const labels = {
-    admin: t('userManagement.roles.admin'),
-    user: t('userManagement.roles.user'),
-    guest: t('userManagement.roles.guest')
+  interface Emits {
+    (e: 'update:visible', value: boolean): void
+    (e: 'edit', user: User): void
   }
-  return labels[role] || role
-}
 
-const getStatusTagType = (status: UserStatus) => {
-  const types = {
-    [1]: 'success',
-    [0]: 'danger',
-    [2]: 'warning'
+  const props = withDefaults(defineProps<Props>(), {
+    user: null
+  })
+
+  const emit = defineEmits<Emits>()
+
+  const { t } = useI18n()
+
+  // 计算属性
+  const dialogVisible = computed({
+    get: () => props.visible,
+    set: value => emit('update:visible', value)
+  })
+
+  // 方法
+  const getRoleTagType = (role: UserRole) => {
+    const types = {
+      admin: 'danger',
+      user: 'primary',
+      guest: 'info'
+    }
+    return types[role] || 'info'
   }
-  return types[status] || 'info'
-}
 
-const getStatusLabel = (status: UserStatus) => {
-  const labels = {
-    [1]: t('userManagement.status.active'),
-    [0]: t('userManagement.status.disabled'),
-    [2]: t('userManagement.status.pending')
+  const getRoleLabel = (role: UserRole) => {
+    const labels = {
+      admin: t('userManagement.roles.admin'),
+      user: t('userManagement.roles.user'),
+      guest: t('userManagement.roles.guest')
+    }
+    return labels[role] || role
   }
-  return labels[status] || status.toString()
-}
 
-const getGenderLabel = (gender: UserGender) => {
-  const labels = {
-    male: t('userManagement.gender.male'),
-    female: t('userManagement.gender.female'),
-    other: t('userManagement.gender.other')
+  const getStatusTagType = (status: UserStatus) => {
+    const types = {
+      [1]: 'success',
+      [0]: 'danger',
+      [2]: 'warning'
+    }
+    return types[status] || 'info'
   }
-  return labels[gender] || gender
-}
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleString()
-}
-
-const handleClose = () => {
-  dialogVisible.value = false
-}
-
-const handleEdit = () => {
-  if (props.user) {
-    emit('edit', props.user)
-    handleClose()
+  const getStatusLabel = (status: UserStatus) => {
+    const labels = {
+      [1]: t('userManagement.status.active'),
+      [0]: t('userManagement.status.disabled'),
+      [2]: t('userManagement.status.pending')
+    }
+    return labels[status] || status.toString()
   }
-}
+
+  const getGenderLabel = (gender: UserGender) => {
+    const labels = {
+      male: t('userManagement.gender.male'),
+      female: t('userManagement.gender.female'),
+      other: t('userManagement.gender.other')
+    }
+    return labels[gender] || gender
+  }
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleString()
+  }
+
+  const handleClose = () => {
+    dialogVisible.value = false
+  }
+
+  const handleEdit = () => {
+    if (props.user) {
+      emit('edit', props.user)
+      handleClose()
+    }
+  }
 </script>
 
 <style scoped>
-.user-detail {
-  padding: 0;
-}
+  .user-detail {
+    padding: 0;
+  }
 
-.detail-section {
-  margin-bottom: 24px;
-}
+  .detail-section {
+    margin-bottom: 24px;
+  }
 
-.detail-section:last-child {
-  margin-bottom: 0;
-}
+  .detail-section:last-child {
+    margin-bottom: 0;
+  }
 
-.section-title {
-  margin: 0 0 16px 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--el-text-color-primary);
-  border-bottom: 1px solid var(--el-border-color-light);
-  padding-bottom: 8px;
-}
+  .section-title {
+    margin: 0 0 16px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+    border-bottom: 1px solid var(--el-border-color-light);
+    padding-bottom: 8px;
+  }
 
-.user-header {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 20px;
-  background: var(--el-bg-color-page);
-  border-radius: 8px;
-}
+  .user-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: var(--el-bg-color-page);
+    border-radius: 8px;
+  }
 
-.user-avatar {
-  flex-shrink: 0;
-}
+  .user-avatar {
+    flex-shrink: 0;
+  }
 
-.user-info {
-  flex: 1;
-}
+  .user-info {
+    flex: 1;
+  }
 
-.user-name {
-  margin: 0 0 8px 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--el-text-color-primary);
-}
+  .user-name {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+  }
 
-.user-username {
-  margin: 0 0 12px 0;
-  font-size: 14px;
-  color: var(--el-text-color-regular);
-}
+  .user-username {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: var(--el-text-color-regular);
+  }
 
-.user-tags {
-  display: flex;
-  gap: 8px;
-}
+  .user-tags {
+    display: flex;
+    gap: 8px;
+  }
 
-.info-item {
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-}
+  .info-item {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+  }
 
-.info-item:last-child {
-  margin-bottom: 0;
-}
+  .info-item:last-child {
+    margin-bottom: 0;
+  }
 
-.info-item label {
-  display: inline-block;
-  width: 120px;
-  font-weight: 500;
-  color: var(--el-text-color-regular);
-  flex-shrink: 0;
-}
+  .info-item label {
+    display: inline-block;
+    width: 120px;
+    font-weight: 500;
+    color: var(--el-text-color-regular);
+    flex-shrink: 0;
+  }
 
-.info-item span {
-  color: var(--el-text-color-primary);
-  flex: 1;
-}
+  .info-item span {
+    color: var(--el-text-color-primary);
+    flex: 1;
+  }
 
-.remark-content {
-  padding: 12px;
-  background: var(--el-bg-color-page);
-  border-radius: 4px;
-  color: var(--el-text-color-primary);
-  line-height: 1.6;
-}
+  .remark-content {
+    padding: 12px;
+    background: var(--el-bg-color-page);
+    border-radius: 4px;
+    color: var(--el-text-color-primary);
+    line-height: 1.6;
+  }
 
-.dialog-footer {
-  text-align: right;
-}
-</style> 
+  .dialog-footer {
+    text-align: right;
+  }
+</style>

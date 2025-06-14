@@ -26,7 +26,7 @@
 @mixin hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -69,11 +69,11 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 $spacing-md;
-  
+
   @include respond-to('tablet') {
     padding: 0 $spacing-sm;
   }
-  
+
   @include respond-to('mobile') {
     padding: 0 $spacing-xs;
   }
@@ -98,7 +98,7 @@
   border-radius: $border-radius-lg;
   box-shadow: $box-shadow-base;
   border: 1px solid $border-color-light;
-  
+
   @include respond-to('mobile') {
     border-radius: $border-radius-base;
     box-shadow: $box-shadow-sm;
@@ -111,12 +111,12 @@
 @mixin responsive-button {
   padding: $spacing-sm $spacing-md;
   font-size: $font-size-sm;
-  
+
   @include respond-to('tablet') {
     padding: $spacing-xs $spacing-sm;
     font-size: $font-size-xs;
   }
-  
+
   @include respond-to('mobile') {
     padding: 6px 10px;
     font-size: 11px;
@@ -129,24 +129,24 @@
 @mixin responsive-table {
   width: 100%;
   overflow-x: auto;
-  
+
   @include respond-to('tablet') {
     font-size: $font-size-xs;
-    
+
     .el-table__header th,
     .el-table__body td {
       padding: 8px 6px;
     }
   }
-  
+
   @include respond-to('mobile') {
     font-size: 11px;
-    
+
     .el-table__header th,
     .el-table__body td {
       padding: 6px 4px;
     }
-    
+
     .el-button {
       padding: 2px 6px;
       font-size: 10px;
@@ -159,80 +159,80 @@
  */
 @mixin responsive-stat-card {
   @include card-style;
-  
+
   .stat-content {
     padding: $spacing-lg;
     display: flex;
     align-items: center;
     gap: $spacing-md;
   }
-  
+
   .stat-icon {
     width: 48px;
     height: 48px;
     flex-shrink: 0;
   }
-  
+
   .stat-number {
     font-size: 24px;
     font-weight: 600;
   }
-  
+
   .stat-label {
     font-size: $font-size-sm;
     color: $text-color-regular;
   }
-  
+
   @include respond-to('desktop') {
     .stat-content {
       padding: $spacing-md;
       gap: $spacing-sm;
     }
-    
+
     .stat-icon {
       width: 40px;
       height: 40px;
     }
-    
+
     .stat-number {
       font-size: 20px;
     }
   }
-  
+
   @include respond-to('tablet') {
     .stat-content {
       padding: $spacing-sm;
       gap: $spacing-xs;
     }
-    
+
     .stat-icon {
       width: 32px;
       height: 32px;
     }
-    
+
     .stat-number {
       font-size: 16px;
     }
-    
+
     .stat-label {
       font-size: $font-size-xs;
     }
   }
-  
+
   @include respond-to('mobile') {
     .stat-content {
       padding: $spacing-xs;
     }
-    
+
     .stat-icon {
       width: 28px;
       height: 28px;
     }
-    
+
     .stat-number {
       font-size: 14px;
     }
-    
+
     .stat-label {
       font-size: 11px;
     }
@@ -403,7 +403,10 @@
 }
 
 // 输入框样式
-@mixin input-style($border-color: $form-input-border-color, $focus-color: $form-input-focus-border-color) {
+@mixin input-style(
+  $border-color: $form-input-border-color,
+  $focus-color: $form-input-focus-border-color
+) {
   width: 100%;
   padding: $spacing-sm;
   border: 1px solid $border-color;
@@ -493,4 +496,4 @@
   &:-ms-input-placeholder {
     color: $color;
   }
-} 
+}

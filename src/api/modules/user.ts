@@ -7,11 +7,11 @@
  */
 
 import request from '@/utils/request'
-import type { 
-  User, 
+import type {
+  User,
   UserListQuery,
   UserListResult,
-  CreateUserRequest, 
+  CreateUserRequest,
   UpdateUserRequest,
   BatchOperationRequest,
   UserImportData,
@@ -37,16 +37,14 @@ export const userApi = {
    * @param id 用户ID
    * @returns 用户详情
    */
-  getById: (id: number): Promise<User> =>
-    request.get(`/api/users/${id}`),
+  getById: (id: number): Promise<User> => request.get(`/api/users/${id}`),
 
   /**
    * 创建用户
    * @param data 用户数据
    * @returns 创建的用户信息
    */
-  create: (data: CreateUserRequest): Promise<User> =>
-    request.post('/api/users', data),
+  create: (data: CreateUserRequest): Promise<User> => request.post('/api/users', data),
 
   /**
    * 更新用户
@@ -62,20 +60,20 @@ export const userApi = {
    * @param id 用户ID
    * @returns 删除结果
    */
-  delete: (id: number): Promise<void> =>
-    request.delete(`/api/users/${id}`),
+  delete: (id: number): Promise<void> => request.delete(`/api/users/${id}`),
 
   /**
    * 批量操作用户
    * @param data 批量操作数据
    * @returns 操作结果
    */
-  batchOperation: (data: BatchOperationRequest): Promise<{
+  batchOperation: (
+    data: BatchOperationRequest
+  ): Promise<{
     successCount: number
     failureCount: number
     message: string
-  }> =>
-    request.post('/api/users/batch', data),
+  }> => request.post('/api/users/batch', data),
 
   /**
    * 导入用户
@@ -98,7 +96,7 @@ export const userApi = {
    * @returns 导出文件流
    */
   export: (params?: Partial<UserListQuery>): Promise<Blob> =>
-    request.get('/api/users/export', { 
+    request.get('/api/users/export', {
       params,
       responseType: 'blob'
     }),
@@ -116,8 +114,7 @@ export const userApi = {
    * 获取用户统计数据
    * @returns 统计数据
    */
-  getStatistics: (): Promise<UserStatistics> =>
-    request.get('/api/users/statistics'),
+  getStatistics: (): Promise<UserStatistics> => request.get('/api/users/statistics'),
 
   /**
    * 重置用户密码
@@ -157,13 +154,11 @@ export const userApi = {
    * 获取部门列表
    * @returns 部门列表
    */
-  getDepartments: (): Promise<string[]> =>
-    request.get('/api/users/departments'),
+  getDepartments: (): Promise<string[]> => request.get('/api/users/departments'),
 
   /**
    * 获取职位列表
    * @returns 职位列表
    */
-  getPositions: (): Promise<string[]> =>
-    request.get('/api/users/positions')
-} 
+  getPositions: (): Promise<string[]> => request.get('/api/users/positions')
+}

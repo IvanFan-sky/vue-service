@@ -20,20 +20,20 @@ export const lazyLoad: Directive = {
   mounted(el: LazyLoadElement, binding: DirectiveBinding) {
     // 创建Intersection Observer
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             const img = entry.target as HTMLImageElement
-            
+
             // 设置图片源
             if (binding.value) {
               img.src = binding.value
             }
-            
+
             // 移除loading类，添加loaded类
             img.classList.remove('lazy-loading')
             img.classList.add('lazy-loaded')
-            
+
             // 停止观察
             observer.unobserve(img)
           }
@@ -48,15 +48,16 @@ export const lazyLoad: Directive = {
 
     // 添加loading类
     el.classList.add('lazy-loading')
-    
+
     // 设置占位图片
     if (!el.src) {
-      el.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
+      el.src =
+        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkxvYWRpbmcuLi48L3RleHQ+PC9zdmc+'
     }
-    
+
     // 开始观察
     observer.observe(el)
-    
+
     // 保存observer引用，用于清理
     el._observer = observer
   },
@@ -94,20 +95,20 @@ export const lazyLoad: Directive = {
 export const lazyLoadBg: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             const element = entry.target as HTMLElement
-            
+
             // 设置背景图片
             if (binding.value) {
               element.style.backgroundImage = `url(${binding.value})`
             }
-            
+
             // 移除loading类，添加loaded类
             element.classList.remove('lazy-bg-loading')
             element.classList.add('lazy-bg-loaded')
-            
+
             // 停止观察
             observer.unobserve(element)
           }
@@ -121,10 +122,10 @@ export const lazyLoadBg: Directive = {
 
     // 添加loading类
     el.classList.add('lazy-bg-loading')
-    
+
     // 开始观察
     observer.observe(el)
-    
+
     // 保存observer引用
     ;(el as any)._bgObserver = observer
   },

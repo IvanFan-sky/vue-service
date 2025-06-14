@@ -300,4 +300,4 @@ export interface UserFormRules {
     trigger?: string
     validator?: (rule: any, value: any, callback: any) => void
   }>
-} 
+}

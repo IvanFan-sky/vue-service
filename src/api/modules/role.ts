@@ -7,11 +7,12 @@
  */
 
 import { apiClient } from '@/utils/apiClient'
-import type { 
-  Role, 
+import { roleMockApi, permissionMockApi } from '@/api/mock/roleMock'
+import type {
+  Role,
   RoleListQuery,
   RoleListResult,
-  CreateRoleRequest, 
+  CreateRoleRequest,
   UpdateRoleRequest,
   RoleStatistics,
   Permission,
@@ -20,9 +21,19 @@ import type {
 } from '@/types/role'
 
 /**
- * 角色管理API
+ * 是否使用模拟数据
  */
-export const roleApi = {
+const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
+
+/**
+ * 获取API模式
+ */
+const getApiMode = () => USE_MOCK ? 'mock' : 'real'
+
+/**
+ * 真实角色管理API
+ */
+const realRoleApi = {
   /**
    * 获取角色列表
    * @param params 查询参数
@@ -36,8 +47,7 @@ export const roleApi = {
    * @param id 角色ID
    * @returns 角色详情
    */
-  getById: (id: number): Promise<Role> =>
-    apiClient.get(`/api/roles/${id}`),
+  getById: (id: number): Promise<Role> => apiClient.get(`/api/roles/${id}`),
 
   /**
    * 创建角色
@@ -115,15 +125,19 @@ export const roleApi = {
    * @returns 新角色信息
    */
   copy: (id: number, name: string): Promise<Role> =>
-    apiClient.post(`/api/roles/${id}/copy`, { name }, {
-      showLoading: true
-    })
+    apiClient.post(
+      `/api/roles/${id}/copy`,
+      { name },
+      {
+        showLoading: true
+      }
+    )
 }
 
 /**
- * 权限管理API
+ * 真实权限管理API
  */
-export const permissionApi = {
+const realPermissionApi = {
   /**
    * 获取权限树
    * @returns 权限树数据
@@ -147,8 +161,7 @@ export const permissionApi = {
    * @param id 权限ID
    * @returns 权限详情
    */
-  getById: (id: number): Promise<Permission> =>
-    apiClient.get(`/api/permissions/${id}`),
+  getById: (id: number): Promise<Permission> => apiClient.get(`/api/permissions/${id}`),
 
   /**
    * 创建权限
@@ -189,4 +202,22 @@ export const permissionApi = {
    */
   updateStatus: (id: number, enabled: boolean): Promise<Permission> =>
     apiClient.patch(`/api/permissions/${id}/status`, { enabled })
+}
+
+/**
+ * 导出角色管理API（根据环境选择真实或模拟）
+ */
+export const roleApi = USE_MOCK ? roleMockApi : realRoleApi
+
+/**
+ * 导出权限管理API（根据环境选择真实或模拟）
+ */
+export const permissionApi = USE_MOCK ? permissionMockApi : realPermissionApi
+
+/**
+ * 打印当前API配置信息（仅开发环境）
+ */
+if (import.meta.env.DEV) {
+  console.log(`🔧 角色API模式: ${getApiMode()}`)
+  console.log(`🔧 权限API模式: ${getApiMode()}`)
 }

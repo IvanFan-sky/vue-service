@@ -42,7 +42,7 @@ export class TokenManager {
       if (!base64Url) {
         throw new Error('Invalid token format')
       }
-      
+
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
       const jsonPayload = decodeURIComponent(
         atob(base64)
@@ -50,7 +50,7 @@ export class TokenManager {
           .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
           .join('')
       )
-      
+
       return JSON.parse(jsonPayload)
     } catch (error) {
       throw new Error('Invalid token format')
@@ -67,8 +67,8 @@ export class TokenManager {
       const payload = this.parseJWT(token)
       const expiresAt = payload.exp * 1000
       const now = Date.now()
-      
-      return (expiresAt - now) <= this.REFRESH_THRESHOLD
+
+      return expiresAt - now <= this.REFRESH_THRESHOLD
     } catch (error) {
       return true // 解析失败认为已过期
     }
@@ -84,7 +84,7 @@ export class TokenManager {
       const payload = this.parseJWT(token)
       const expiresAt = payload.exp * 1000
       const now = Date.now()
-      
+
       return now >= expiresAt
     } catch (error) {
       return true // 解析失败认为已过期
@@ -138,14 +138,14 @@ export class TokenManager {
       }
 
       const response = await authApi.refreshToken(refreshToken)
-      
+
       if (response.code === 200 && response.data) {
         const { token: newToken, refreshToken: newRefreshToken } = response.data
 
         // 更新Token
         this.authStore.token = newToken
         localStorage.setItem('token', newToken)
-        
+
         if (newRefreshToken) {
           localStorage.setItem('refresh_token', newRefreshToken)
         }
@@ -164,14 +164,14 @@ export class TokenManager {
       }
     } catch (error) {
       console.error('Token刷新失败:', error)
-      
+
       // 处理等待队列
       this.failedQueue.forEach(({ reject }) => reject(error))
       this.failedQueue = []
 
       // 刷新失败，清除认证信息
       this.authStore.logout()
-      
+
       throw error
     } finally {
       this.isRefreshing = false
@@ -184,7 +184,7 @@ export class TokenManager {
    */
   async getValidToken(): Promise<string> {
     const token = this.authStore.token
-    
+
     if (!token) {
       throw new Error('No token available')
     }
@@ -236,7 +236,7 @@ export class TokenManager {
     timeToExpire: number | null
   } {
     const currentToken = token || this.authStore.token
-    
+
     if (!currentToken) {
       return {
         payload: null,

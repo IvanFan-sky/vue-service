@@ -18,101 +18,101 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+  import { useRouter } from 'vue-router'
 
-const router = useRouter()
+  const router = useRouter()
 
-// 返回首页
-const goHome = () => {
-  router.push('/')
-}
+  // 返回首页
+  const goHome = () => {
+    router.push('/')
+  }
 
-// 返回上一页
-const goBack = () => {
-  router.go(-1)
-}
+  // 返回上一页
+  const goBack = () => {
+    router.go(-1)
+  }
 </script>
 
 <style scoped>
-.not-found {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
+  .not-found {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+  }
 
-.not-found-content {
-  display: flex;
-  align-items: center;
-  max-width: 800px;
-  padding: 40px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-}
-
-.not-found-image {
-  flex: 1;
-  text-align: center;
-  margin-right: 40px;
-}
-
-.error-icon {
-  font-size: 120px;
-  font-weight: bold;
-  color: #409EFF;
-  opacity: 0.3;
-}
-
-.not-found-text {
-  flex: 1;
-}
-
-.not-found-text h1 {
-  font-size: 80px;
-  font-weight: bold;
-  color: #409EFF;
-  margin: 0;
-  line-height: 1;
-}
-
-.not-found-text h2 {
-  font-size: 24px;
-  color: #333;
-  margin: 20px 0 10px 0;
-}
-
-.not-found-text p {
-  font-size: 16px;
-  color: #666;
-  margin-bottom: 30px;
-  line-height: 1.5;
-}
-
-.not-found-actions {
-  display: flex;
-  gap: 10px;
-}
-
-@media (max-width: 768px) {
   .not-found-content {
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
+    display: flex;
+    align-items: center;
+    max-width: 800px;
+    padding: 40px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   }
-  
+
   .not-found-image {
-    margin-right: 0;
-    margin-bottom: 20px;
+    flex: 1;
+    text-align: center;
+    margin-right: 40px;
   }
-  
+
+  .error-icon {
+    font-size: 120px;
+    font-weight: bold;
+    color: #409eff;
+    opacity: 0.3;
+  }
+
+  .not-found-text {
+    flex: 1;
+  }
+
   .not-found-text h1 {
-    font-size: 60px;
+    font-size: 80px;
+    font-weight: bold;
+    color: #409eff;
+    margin: 0;
+    line-height: 1;
   }
-  
+
   .not-found-text h2 {
-    font-size: 20px;
+    font-size: 24px;
+    color: #333;
+    margin: 20px 0 10px 0;
   }
-}
-</style> 
+
+  .not-found-text p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.5;
+  }
+
+  .not-found-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .not-found-content {
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .not-found-image {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+
+    .not-found-text h1 {
+      font-size: 60px;
+    }
+
+    .not-found-text h2 {
+      font-size: 20px;
+    }
+  }
+</style>

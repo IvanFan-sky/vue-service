@@ -31,7 +31,9 @@ const realAuthApi = {
    * })
    * ```
    */
-  login: (loginForm: LoginForm): Promise<ApiResponse<{ token: string; user: User; refreshToken?: string }>> => {
+  login: (
+    loginForm: LoginForm
+  ): Promise<ApiResponse<{ token: string; user: User; refreshToken?: string }>> => {
     return apiClient.post('/auth/login', loginForm, {
       showLoading: true,
       showErrorMessage: true,
@@ -64,11 +66,15 @@ const realAuthApi = {
    * ```
    */
   logout: (): Promise<ApiResponse> => {
-    return apiClient.post('/auth/logout', {}, {
-      showLoading: false,
-      enableDedupe: false,
-      retryCount: 1
-    })
+    return apiClient.post(
+      '/auth/logout',
+      {},
+      {
+        showLoading: false,
+        enableDedupe: false,
+        retryCount: 1
+      }
+    )
   },
 
   /**
@@ -80,12 +86,18 @@ const realAuthApi = {
    * const result = await realAuthApi.refreshToken('refresh_token_here')
    * ```
    */
-  refreshToken: (refreshToken: string): Promise<ApiResponse<{ token: string; refreshToken?: string }>> => {
-    return apiClient.post('/auth/refresh', { refreshToken }, {
-      enableDedupe: false,
-      showErrorMessage: false,
-      retryCount: 1
-    })
+  refreshToken: (
+    refreshToken: string
+  ): Promise<ApiResponse<{ token: string; refreshToken?: string }>> => {
+    return apiClient.post(
+      '/auth/refresh',
+      { refreshToken },
+      {
+        enableDedupe: false,
+        showErrorMessage: false,
+        retryCount: 1
+      }
+    )
   },
 
   /**
@@ -137,4 +149,4 @@ if (import.meta.env.DEV) {
   console.log(`🔧 认证API模式: ${getApiMode()}`)
   console.log(`🌐 API基础URL: ${import.meta.env['VITE_API_BASE_URL']}`)
   console.log(`🎭 使用模拟数据: ${USE_MOCK}`)
-} 
+}
