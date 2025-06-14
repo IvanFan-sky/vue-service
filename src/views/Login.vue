@@ -176,7 +176,9 @@
    * 处理登录
    */
   const handleLogin = async () => {
-    if (!isFormValid.value || loading.value) {return}
+    if (!isFormValid.value || loading.value) {
+      return
+    }
 
     loading.value = true
     errorMessage.value = ''

@@ -310,12 +310,8 @@ export class ApiClient {
    * 发送请求
    */
   async request<T = any>(config: RequestConfig): Promise<ApiResponse<T>> {
-    try {
-      const response = await this.instance.request<ApiResponse<T>>(config)
-      return response.data
-    } catch (_error) {
-      throw _error
-    }
+    const response = await this.instance.request<ApiResponse<T>>(config)
+    return response.data
   }
 
   /**

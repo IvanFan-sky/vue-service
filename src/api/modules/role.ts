@@ -28,7 +28,7 @@ const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
 /**
  * 获取API模式
  */
-const getApiMode = () => USE_MOCK ? 'mock' : 'real'
+const getApiMode = () => (USE_MOCK ? 'mock' : 'real')
 
 /**
  * 真实角色管理API
@@ -57,10 +57,12 @@ const realRoleApi = {
    * @returns 创建的角色信息
    */
   create: (data: CreateRoleRequest): Promise<Role> =>
-    apiClient.post('/api/roles', data, {
-      showLoading: true,
-      retryCount: 2
-    }).then(res => res.data),
+    apiClient
+      .post('/api/roles', data, {
+        showLoading: true,
+        retryCount: 2
+      })
+      .then(res => res.data),
 
   /**
    * 更新角色
@@ -69,10 +71,12 @@ const realRoleApi = {
    * @returns 更新后的角色信息
    */
   update: (id: number, data: UpdateRoleRequest): Promise<Role> =>
-    apiClient.put(`/api/roles/${id}`, data, {
-      showLoading: true,
-      retryCount: 2
-    }).then(res => res.data),
+    apiClient
+      .put(`/api/roles/${id}`, data, {
+        showLoading: true,
+        retryCount: 2
+      })
+      .then(res => res.data),
 
   /**
    * 删除角色
@@ -80,9 +84,11 @@ const realRoleApi = {
    * @returns 删除结果
    */
   delete: (id: number): Promise<void> =>
-    apiClient.delete(`/api/roles/${id}`, {
-      showLoading: true
-    }).then(res => res.data),
+    apiClient
+      .delete(`/api/roles/${id}`, {
+        showLoading: true
+      })
+      .then(res => res.data),
 
   /**
    * 更新角色状态
@@ -98,9 +104,11 @@ const realRoleApi = {
    * @returns 统计数据
    */
   getStatistics: (): Promise<RoleStatistics> =>
-    apiClient.get('/api/roles/statistics', {
-      enableDedupe: true
-    }).then(res => res.data),
+    apiClient
+      .get('/api/roles/statistics', {
+        enableDedupe: true
+      })
+      .then(res => res.data),
 
   /**
    * 分配权限给角色
@@ -108,9 +116,11 @@ const realRoleApi = {
    * @returns 分配结果
    */
   assignPermissions: (data: AssignPermissionsRequest): Promise<void> =>
-    apiClient.post('/api/roles/assign-permissions', data, {
-      showLoading: true
-    }).then(res => res.data),
+    apiClient
+      .post('/api/roles/assign-permissions', data, {
+        showLoading: true
+      })
+      .then(res => res.data),
 
   /**
    * 获取角色权限列表
@@ -127,13 +137,15 @@ const realRoleApi = {
    * @returns 新角色信息
    */
   copy: (id: number, name: string): Promise<Role> =>
-    apiClient.post(
-      `/api/roles/${id}/copy`,
-      { name },
-      {
-        showLoading: true
-      }
-    ).then(res => res.data)
+    apiClient
+      .post(
+        `/api/roles/${id}/copy`,
+        { name },
+        {
+          showLoading: true
+        }
+      )
+      .then(res => res.data)
 }
 
 /**
@@ -145,25 +157,30 @@ const realPermissionApi = {
    * @returns 权限树数据
    */
   getTree: (): Promise<PermissionTreeNode[]> =>
-    apiClient.get('/api/permissions/tree', {
-      enableDedupe: true
-    }).then(res => res.data),
+    apiClient
+      .get('/api/permissions/tree', {
+        enableDedupe: true
+      })
+      .then(res => res.data),
 
   /**
    * 获取权限列表
    * @returns 权限列表
    */
   getList: (): Promise<Permission[]> =>
-    apiClient.get('/api/permissions', {
-      enableDedupe: true
-    }).then(res => res.data),
+    apiClient
+      .get('/api/permissions', {
+        enableDedupe: true
+      })
+      .then(res => res.data),
 
   /**
    * 获取权限详情
    * @param id 权限ID
    * @returns 权限详情
    */
-  getById: (id: number): Promise<Permission> => apiClient.get(`/api/permissions/${id}`).then(res => res.data),
+  getById: (id: number): Promise<Permission> =>
+    apiClient.get(`/api/permissions/${id}`).then(res => res.data),
 
   /**
    * 创建权限
@@ -171,9 +188,11 @@ const realPermissionApi = {
    * @returns 创建的权限信息
    */
   create: (data: Partial<Permission>): Promise<Permission> =>
-    apiClient.post('/api/permissions', data, {
-      showLoading: true
-    }).then(res => res.data),
+    apiClient
+      .post('/api/permissions', data, {
+        showLoading: true
+      })
+      .then(res => res.data),
 
   /**
    * 更新权限
@@ -182,9 +201,11 @@ const realPermissionApi = {
    * @returns 更新后的权限信息
    */
   update: (id: number, data: Partial<Permission>): Promise<Permission> =>
-    apiClient.put(`/api/permissions/${id}`, data, {
-      showLoading: true
-    }).then(res => res.data),
+    apiClient
+      .put(`/api/permissions/${id}`, data, {
+        showLoading: true
+      })
+      .then(res => res.data),
 
   /**
    * 删除权限
@@ -192,9 +213,11 @@ const realPermissionApi = {
    * @returns 删除结果
    */
   delete: (id: number): Promise<void> =>
-    apiClient.delete(`/api/permissions/${id}`, {
-      showLoading: true
-    }).then(res => res.data),
+    apiClient
+      .delete(`/api/permissions/${id}`, {
+        showLoading: true
+      })
+      .then(res => res.data),
 
   /**
    * 更新权限状态

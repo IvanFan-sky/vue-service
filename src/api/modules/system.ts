@@ -7,12 +7,7 @@
  */
 
 import { apiClient } from '@/utils/apiClient'
-import {
-  systemMockApi,
-  configMockApi,
-  logMockApi,
-  testMockApi
-} from '@/api/mock/systemMock'
+import { systemMockApi, configMockApi, logMockApi, testMockApi } from '@/api/mock/systemMock'
 import type {
   SystemInfo,
   SystemConfig,
@@ -35,7 +30,7 @@ const USE_MOCK = import.meta.env.VITE_USE_MOCK === 'true'
 /**
  * 获取API模式
  */
-const getApiMode = () => USE_MOCK ? 'mock' : 'real'
+const getApiMode = () => (USE_MOCK ? 'mock' : 'real')
 
 /**
  * 真实系统信息API
@@ -132,18 +127,22 @@ const realConfigApi = {
    * @returns 配置列表
    */
   getAll: (): Promise<SystemConfig[]> =>
-    apiClient.get('/api/system/configs', {
-      enableDedupe: true
-    }).then(res => res.data),
+    apiClient
+      .get('/api/system/configs', {
+        enableDedupe: true
+      })
+      .then(res => res.data),
 
   /**
    * 按分组获取配置
    * @returns 配置分组
    */
   getGroups: (): Promise<ConfigGroup[]> =>
-    apiClient.get('/api/system/config-groups', {
-      enableDedupe: true
-    }).then(res => res.data),
+    apiClient
+      .get('/api/system/config-groups', {
+        enableDedupe: true
+      })
+      .then(res => res.data),
 
   /**
    * 获取指定分组的配置
@@ -151,16 +150,19 @@ const realConfigApi = {
    * @returns 配置列表
    */
   getByGroup: (group: string): Promise<SystemConfig[]> =>
-    apiClient.get(`/api/system/configs/${group}`, {
-      enableDedupe: true
-    }).then(res => res.data),
+    apiClient
+      .get(`/api/system/configs/${group}`, {
+        enableDedupe: true
+      })
+      .then(res => res.data),
 
   /**
    * 获取单个配置
    * @param key 配置键
    * @returns 配置值
    */
-  get: (key: string): Promise<string> => apiClient.get(`/api/system/config/${key}`).then(res => res.data),
+  get: (key: string): Promise<string> =>
+    apiClient.get(`/api/system/config/${key}`).then(res => res.data),
 
   /**
    * 更新配置
@@ -168,10 +170,12 @@ const realConfigApi = {
    * @returns 更新结果
    */
   update: (data: UpdateSystemConfigRequest): Promise<void> =>
-    apiClient.post('/api/system/configs', data, {
-      showLoading: true,
-      retryCount: 2
-    }).then(res => res.data),
+    apiClient
+      .post('/api/system/configs', data, {
+        showLoading: true,
+        retryCount: 2
+      })
+      .then(res => res.data),
 
   /**
    * 重置配置到默认值
@@ -179,22 +183,26 @@ const realConfigApi = {
    * @returns 重置结果
    */
   reset: (keys: string[]): Promise<void> =>
-    apiClient.post(
-      '/api/system/configs/reset',
-      { keys },
-      {
-        showLoading: true
-      }
-    ).then(res => res.data),
+    apiClient
+      .post(
+        '/api/system/configs/reset',
+        { keys },
+        {
+          showLoading: true
+        }
+      )
+      .then(res => res.data),
 
   /**
    * 导出配置
    * @returns 配置文件
    */
   export: (): Promise<Blob> =>
-    apiClient.get('/api/system/configs/export', {
-      responseType: 'blob'
-    }).then(res => res.data),
+    apiClient
+      .get('/api/system/configs/export', {
+        responseType: 'blob'
+      })
+      .then(res => res.data),
 
   /**
    * 导入配置
@@ -204,12 +212,14 @@ const realConfigApi = {
   import: (file: File): Promise<{ successCount: number; failureCount: number }> => {
     const formData = new FormData()
     formData.append('file', file)
-    return apiClient.post('/api/system/configs/import', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      showLoading: true
-    }).then(res => res.data)
+    return apiClient
+      .post('/api/system/configs/import', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        showLoading: true
+      })
+      .then(res => res.data)
   }
 }
 
@@ -237,13 +247,15 @@ const realLogApi = {
    * @returns 清理结果
    */
   clear: (days: number): Promise<{ deletedCount: number }> =>
-    apiClient.post(
-      '/api/system/logs/clear',
-      { days },
-      {
-        showLoading: true
-      }
-    ).then(res => res.data),
+    apiClient
+      .post(
+        '/api/system/logs/clear',
+        { days },
+        {
+          showLoading: true
+        }
+      )
+      .then(res => res.data),
 
   /**
    * 导出日志
@@ -251,10 +263,12 @@ const realLogApi = {
    * @returns 日志文件
    */
   export: (params?: Partial<SystemLogQuery>): Promise<Blob> =>
-    apiClient.get('/api/system/logs/export', {
-      params,
-      responseType: 'blob'
-    }).then(res => res.data)
+    apiClient
+      .get('/api/system/logs/export', {
+        params,
+        responseType: 'blob'
+      })
+      .then(res => res.data)
 }
 
 /**
@@ -299,9 +313,11 @@ const realTestApi = {
    * @returns 测试结果
    */
   testDatabase: (): Promise<{ success: boolean; message: string; version: string }> =>
-    apiClient.get('/api/system/test-database', {
-      showLoading: true
-    }).then(res => res.data)
+    apiClient
+      .get('/api/system/test-database', {
+        showLoading: true
+      })
+      .then(res => res.data)
 }
 
 /**
@@ -313,9 +329,11 @@ const realSecurityApi = {
    * @returns 安全配置
    */
   getConfig: (): Promise<SecurityConfig> =>
-    apiClient.get('/api/system/security', {
-      enableDedupe: true
-    }).then(res => res.data),
+    apiClient
+      .get('/api/system/security', {
+        enableDedupe: true
+      })
+      .then(res => res.data),
 
   /**
    * 更新安全配置
@@ -323,9 +341,11 @@ const realSecurityApi = {
    * @returns 更新结果
    */
   updateConfig: (config: SecurityConfig): Promise<void> =>
-    apiClient.put('/api/system/security', config, {
-      showLoading: true
-    }).then(res => res.data),
+    apiClient
+      .put('/api/system/security', config, {
+        showLoading: true
+      })
+      .then(res => res.data),
 
   /**
    * 获取登录日志
