@@ -35,7 +35,7 @@ request.interceptors.request.use(
       if (token) {
         config.headers.Authorization = `Bearer ${token}`
       }
-    } catch (error) {
+    } catch (_error) {
       // Token获取失败，可能需要重新登录
       console.warn('获取Token失败:', error)
     }
@@ -53,7 +53,7 @@ request.interceptors.request.use(
     return config
   },
   (error: AxiosError) => {
-    console.error('❌ 请求错误:', error)
+    console.error('❌ 请求错误:', _error)
     return Promise.reject(error)
   }
 )
@@ -85,7 +85,7 @@ request.interceptors.response.use(
     return Promise.reject(new Error(data.message || '请求失败'))
   },
   (error: AxiosError<ApiResponse>) => {
-    console.error('❌ 响应错误:', error)
+    console.error('❌ 响应错误:', _error)
 
     // 处理HTTP错误状态码
     let message = '请求失败'

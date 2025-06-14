@@ -91,8 +91,8 @@ export const lazyLoad = (
       const component = await loader()
       retryCount = 0 // 重置重试计数
       return component
-    } catch (error) {
-      console.error('组件加载失败:', error)
+    } catch (_error) {
+      console.error('组件加载失败:', _error)
 
       if (retryCount < config.retryCount) {
         retryCount++

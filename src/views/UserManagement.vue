@@ -402,9 +402,9 @@
       const result = await userMockApi.getList(params)
       userList.value = result.list
       pagination.total = result.total
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(t('common.loadError'))
-      console.error('加载用户列表失败:', error)
+      console.error('加载用户列表失败:', _error)
     } finally {
       loading.value = false
     }
@@ -413,16 +413,16 @@
   const loadStatistics = async () => {
     try {
       statistics.value = await userMockApi.getStatistics()
-    } catch (error) {
-      console.error('加载统计数据失败:', error)
+    } catch (_error) {
+      console.error('加载统计数据失败:', _error)
     }
   }
 
   const loadDepartments = async () => {
     try {
       departments.value = await userMockApi.getDepartments()
-    } catch (error) {
-      console.error('加载部门列表失败:', error)
+    } catch (_error) {
+      console.error('加载部门列表失败:', _error)
     }
   }
 
@@ -501,8 +501,8 @@
       ElMessage.success(t('common.deleteSuccess'))
       loadUserList()
       loadStatistics()
-    } catch (error) {
-      if (error !== 'cancel') {
+    } catch (_error) {
+      if (_error !== 'cancel') {
         ElMessage.error(t('common.deleteError'))
       }
     }
@@ -525,8 +525,8 @@
       ElMessage.success(result.message)
       loadUserList()
       loadStatistics()
-    } catch (error) {
-      if (error !== 'cancel') {
+    } catch (_error) {
+      if (_error !== 'cancel') {
         ElMessage.error(t('common.operationError'))
       }
     }
@@ -539,7 +539,7 @@
       ElMessage.success(result.message)
       loadUserList()
       loadStatistics()
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(t('common.operationError'))
     }
   }
@@ -551,7 +551,7 @@
       ElMessage.success(result.message)
       loadUserList()
       loadStatistics()
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(t('common.operationError'))
     }
   }
@@ -569,7 +569,7 @@
       setTimeout(() => {
         ElMessage.success(t('userManagement.exportSuccess'))
       }, 2000)
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(t('userManagement.exportError'))
     }
   }
@@ -583,7 +583,7 @@
       setTimeout(() => {
         ElMessage.success(t('userManagement.downloadTemplateSuccess'))
       }, 1000)
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(t('userManagement.downloadTemplateError'))
     }
   }

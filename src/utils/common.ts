@@ -89,7 +89,7 @@ export function deepClone<T>(obj: T): T {
   if (typeof obj === 'object') {
     const cloned = {} as T
     for (const key in obj) {
-      if (obj.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
         cloned[key] = deepClone(obj[key])
       }
     }
@@ -111,7 +111,9 @@ export function deepClone<T>(obj: T): T {
  * ```
  */
 export function formatFileSize(bytes: number, decimals = 2): string {
-  if (bytes === 0) {return '0 Bytes'}
+  if (bytes === 0) {
+    return '0 Bytes'
+  }
 
   const k = 1024
   const dm = decimals < 0 ? 0 : decimals
@@ -294,8 +296,8 @@ export async function copyToClipboard(text: string): Promise<boolean> {
       document.body.removeChild(textArea)
       return success
     }
-  } catch (error) {
-    console.error('复制到剪贴板失败:', error)
+  } catch (_error) {
+    console.error('复制到剪贴板失败:', _error)
     return false
   }
 }

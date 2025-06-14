@@ -414,7 +414,9 @@
    * 工具函数
    */
   const formatDate = (dateStr?: string) => {
-    if (!dateStr) {return '暂无'}
+    if (!dateStr) {
+      return '暂无'
+    }
     return new Date(dateStr).toLocaleString('zh-CN')
   }
 
@@ -455,7 +457,9 @@
   }
 
   const handleSave = async () => {
-    if (!formRef.value) {return}
+    if (!formRef.value) {
+      return
+    }
 
     try {
       await formRef.value.validate()
@@ -469,8 +473,8 @@
 
       editing.value = false
       ElMessage.success('个人信息更新成功')
-    } catch (error) {
-      console.error('更新个人信息失败:', error)
+    } catch (_error) {
+      console.error('更新个人信息失败:', _error)
       ElMessage.error('更新失败，请稍后重试')
     } finally {
       saving.value = false
@@ -490,7 +494,9 @@
     const target = event.target as HTMLInputElement
     const file = target.files?.[0]
 
-    if (!file) {return}
+    if (!file) {
+      return
+    }
 
     // 验证文件类型
     if (!file.type.startsWith('image/')) {
@@ -521,8 +527,8 @@
       await authStore.fetchUserInfo()
 
       ElMessage.success('头像更新成功')
-    } catch (error) {
-      console.error('头像上传失败:', error)
+    } catch (_error) {
+      console.error('头像上传失败:', _error)
       ElMessage.error('头像上传失败，请稍后重试')
     } finally {
       avatarUploading.value = false
@@ -531,7 +537,9 @@
   }
 
   const handlePasswordChange = async () => {
-    if (!passwordFormRef.value) {return}
+    if (!passwordFormRef.value) {
+      return
+    }
 
     try {
       await passwordFormRef.value.validate()
@@ -557,8 +565,8 @@
       setTimeout(() => {
         authStore.logout()
       }, 2000)
-    } catch (error) {
-      console.error('密码修改失败:', error)
+    } catch (_error) {
+      console.error('密码修改失败:', _error)
       ElMessage.error('密码修改失败，请检查当前密码是否正确')
     } finally {
       passwordChanging.value = false

@@ -293,7 +293,7 @@
           await authStore.logout()
           ElMessage.success(t('common.success'))
           router.push('/login')
-        } catch (error) {
+        } catch (_error) {
           // 用户取消操作
         }
         break

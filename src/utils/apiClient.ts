@@ -152,7 +152,7 @@ export class ApiClient {
         return config
       },
       error => {
-        console.error('❌ 请求拦截器错误:', error)
+        console.error('❌ 请求拦截器错误:', _error)
         return Promise.reject(error)
       }
     )
@@ -213,7 +213,7 @@ export class ApiClient {
         config.headers = config.headers || {}
         config.headers.Authorization = `Bearer ${token}`
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn('获取Token失败:', error)
     }
   }
@@ -313,7 +313,7 @@ export class ApiClient {
     try {
       const response = await this.instance.request<ApiResponse<T>>(config)
       return response.data
-    } catch (error) {
+    } catch (_error) {
       throw error
     }
   }

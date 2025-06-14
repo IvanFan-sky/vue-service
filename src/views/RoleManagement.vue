@@ -457,8 +457,8 @@
       const response = await roleApi.getList(params)
       roleList.value = response.list
       pagination.total = response.total
-    } catch (error) {
-      console.error('加载角色列表失败:', error)
+    } catch (_error) {
+      console.error('加载角色列表失败:', _error)
       ElMessage.error('加载角色列表失败')
     } finally {
       loading.value = false
@@ -468,16 +468,16 @@
   const loadStatistics = async () => {
     try {
       statistics.value = await roleApi.getStatistics()
-    } catch (error) {
-      console.error('加载统计数据失败:', error)
+    } catch (_error) {
+      console.error('加载统计数据失败:', _error)
     }
   }
 
   const loadPermissionTree = async () => {
     try {
       permissionTree.value = await permissionApi.getTree()
-    } catch (error) {
-      console.error('加载权限树失败:', error)
+    } catch (_error) {
+      console.error('加载权限树失败:', _error)
       ElMessage.error('加载权限树失败')
     }
   }
@@ -536,16 +536,18 @@
       ElMessage.success('删除成功')
       loadRoleList()
       loadStatistics()
-    } catch (error) {
-      if (error !== 'cancel') {
-        console.error('删除角色失败:', error)
+    } catch (_error) {
+      if (_error !== 'cancel') {
+        console.error('删除角色失败:', _error)
         ElMessage.error('删除失败')
       }
     }
   }
 
   const handleSubmit = async () => {
-    if (!formRef.value) {return}
+    if (!formRef.value) {
+      return
+    }
 
     try {
       await formRef.value.validate()
@@ -562,8 +564,8 @@
       formDialogVisible.value = false
       loadRoleList()
       loadStatistics()
-    } catch (error) {
-      console.error('提交失败:', error)
+    } catch (_error) {
+      console.error('提交失败:', _error)
       ElMessage.error('操作失败')
     } finally {
       submitting.value = false
@@ -575,8 +577,8 @@
       await roleApi.updateStatus(role.id, role.enabled)
       ElMessage.success('状态更新成功')
       loadStatistics()
-    } catch (error) {
-      console.error('状态更新失败:', error)
+    } catch (_error) {
+      console.error('状态更新失败:', _error)
       ElMessage.error('状态更新失败')
       // 恢复原状态
       role.enabled = !role.enabled
@@ -662,8 +664,8 @@
       ElMessage.success('权限分配成功')
       permissionDialogVisible.value = false
       loadRoleList()
-    } catch (error) {
-      console.error('权限分配失败:', error)
+    } catch (_error) {
+      console.error('权限分配失败:', _error)
       ElMessage.error('权限分配失败')
     } finally {
       permissionSaving.value = false

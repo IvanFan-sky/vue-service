@@ -486,7 +486,7 @@ export const userMockApi = {
   /**
    * 重置用户密码
    */
-  resetPassword: async (id: number, newPassword: string): Promise<void> => {
+  resetPassword: async (id: number, _newPassword: string): Promise<void> => {
     await new Promise(resolve => setTimeout(resolve, 300))
 
     const userIndex = mockUsers.findIndex(u => u.id === id)
@@ -518,7 +518,7 @@ export const userMockApi = {
   /**
    * 模拟用户导入
    */
-  import: async (file: File): Promise<UserImportResult> => {
+  import: async (_file: File): Promise<UserImportResult> => {
     await new Promise(resolve => setTimeout(resolve, 1000))
 
     // 模拟解析Excel文件并导入用户

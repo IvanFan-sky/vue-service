@@ -52,7 +52,7 @@ export class TokenManager {
       )
 
       return JSON.parse(jsonPayload)
-    } catch (error) {
+    } catch (_error) {
       throw new Error('Invalid token format')
     }
   }
@@ -69,7 +69,7 @@ export class TokenManager {
       const now = Date.now()
 
       return expiresAt - now <= this.REFRESH_THRESHOLD
-    } catch (error) {
+    } catch (_error) {
       return true // 解析失败认为已过期
     }
   }
@@ -86,7 +86,7 @@ export class TokenManager {
       const now = Date.now()
 
       return now >= expiresAt
-    } catch (error) {
+    } catch (_error) {
       return true // 解析失败认为已过期
     }
   }
@@ -96,7 +96,9 @@ export class TokenManager {
    */
   private setupTokenRefresh(): void {
     const token = this.authStore.token
-    if (!token) {return}
+    if (!token) {
+      return
+    }
 
     try {
       const payload = this.parseJWT(token)
@@ -112,8 +114,8 @@ export class TokenManager {
         // Token即将过期或已过期，立即刷新
         this.refreshToken()
       }
-    } catch (error) {
-      console.error('设置Token刷新失败:', error)
+    } catch (_error) {
+      console.error('设置Token刷新失败:', _error)
     }
   }
 
@@ -162,17 +164,17 @@ export class TokenManager {
       } else {
         throw new Error(response.message || 'Token刷新失败')
       }
-    } catch (error) {
-      console.error('Token刷新失败:', error)
+    } catch (_error) {
+      console.error('Token刷新失败:', _error)
 
       // 处理等待队列
-      this.failedQueue.forEach(({ reject }) => reject(error))
+      this.failedQueue.forEach(({ reject }) => reject(_error))
       this.failedQueue = []
 
       // 刷新失败，清除认证信息
       this.authStore.logout()
 
-      throw error
+      throw _error
     } finally {
       this.isRefreshing = false
     }
@@ -196,8 +198,8 @@ export class TokenManager {
 
     if (this.isTokenExpiringSoon(token)) {
       // Token即将过期，后台刷新
-      this.refreshToken().catch(error => {
-        console.error('后台Token刷新失败:', error)
+      this.refreshToken().catch(_error => {
+        console.error('后台Token刷新失败:', _error)
       })
     }
 
@@ -260,7 +262,7 @@ export class TokenManager {
         expiresAt,
         timeToExpire
       }
-    } catch (error) {
+    } catch (_error) {
       return {
         payload: null,
         isExpired: true,

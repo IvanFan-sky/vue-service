@@ -120,7 +120,7 @@
     // 检查是否到达底部
     const { scrollTop: currentScrollTop, scrollHeight, clientHeight } = target
     if (currentScrollTop + clientHeight >= scrollHeight - 10) {
-      emit('reachBottom')
+      emit('reach-bottom')
     }
   })
 

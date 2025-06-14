@@ -25,15 +25,21 @@ export function debounce<T extends (...args: any[]) => any>(
   return function executedFunction(...args: Parameters<T>) {
     const later = () => {
       timeout = null
-      if (!immediate) {func(...args)}
+      if (!immediate) {
+        func(...args)
+      }
     }
 
     const callNow = immediate && !timeout
 
-    if (timeout) {clearTimeout(timeout)}
+    if (timeout) {
+      clearTimeout(timeout)
+    }
     timeout = setTimeout(later, wait)
 
-    if (callNow) {func(...args)}
+    if (callNow) {
+      func(...args)
+    }
   }
 }
 
@@ -81,8 +87,8 @@ export function useCleanup() {
     cleanupFunctions.forEach(fn => {
       try {
         fn()
-      } catch (error) {
-        console.error('清理函数执行失败:', error)
+      } catch (_error) {
+        console.error('清理函数执行失败:', _error)
       }
     })
     cleanupFunctions.length = 0
@@ -176,7 +182,7 @@ export function createBatchExecutor<T>(batchSize = 10, delay = 16) {
       try {
         const result = func()
         resolve(result)
-      } catch (error) {
+      } catch (_error) {
         reject(error)
       }
     })

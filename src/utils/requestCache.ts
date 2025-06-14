@@ -41,7 +41,7 @@ export class RequestCache {
    */
   get(key: string, type: keyof typeof this.cacheConfig = 'list'): any {
     const item = this.cache.get(key)
-    const config = this.cacheConfig[type]
+    const _config = this.cacheConfig[type]
 
     if (!item) {
       return null
@@ -102,7 +102,7 @@ export class RequestCache {
    * @param type 缓存类型
    * @returns 是否存在有效缓存
    */
-  has(key: string, type: keyof typeof this.cacheConfig = 'list'): boolean {
+  has(key: string, _type: keyof typeof this.cacheConfig = 'list'): boolean {
     const item = this.cache.get(key)
     if (!item) {
       return false
@@ -155,7 +155,7 @@ export class RequestCache {
   private evictLRU(): void {
     let oldestKey = ''
     let oldestTime = Date.now()
-    let lowestPriority: 'high' | 'medium' | 'low' = 'high'
+    const _lowestPriority: 'high' | 'medium' | 'low' = 'high'
 
     // 优先淘汰低优先级的缓存
     for (const [key, item] of this.cache.entries()) {
@@ -258,7 +258,7 @@ export class RequestCache {
       try {
         const { key, data, type } = await fn()
         this.set(key, data, type as keyof typeof this.cacheConfig)
-      } catch (error) {
+      } catch (_error) {
         console.warn('缓存预热失败:', error)
       }
     })

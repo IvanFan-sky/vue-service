@@ -93,7 +93,7 @@
   /**
    * 计算属性
    */
-  const errorTitle = computed(() => {
+  const _errorTitle = computed(() => {
     const titles = {
       component: '组件加载失败',
       network: '网络连接错误',
@@ -103,7 +103,7 @@
     return props.title || titles[props.errorType]
   })
 
-  const errorMessage = computed(() => {
+  const _errorMessage = computed(() => {
     const messages = {
       component: '组件加载时发生错误，请检查网络连接或稍后重试',
       network: '网络连接失败，请检查网络设置后重试',
@@ -126,8 +126,8 @@
       retrying.value = true
       await props.onRetry()
       ElMessage.success('重试成功')
-    } catch (error) {
-      console.error('重试失败:', error)
+    } catch (_error) {
+      console.error('重试失败:', _error)
       ElMessage.error('重试失败，请稍后再试')
     } finally {
       retrying.value = false

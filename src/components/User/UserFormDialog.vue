@@ -405,42 +405,46 @@
   const loadDepartments = async () => {
     try {
       departments.value = await userMockApi.getDepartments()
-    } catch (error) {
-      console.error('加载部门列表失败:', error)
+    } catch (_error) {
+      console.error('加载部门列表失败:', _error)
     }
   }
 
   const loadPositions = async () => {
     try {
       positions.value = await userMockApi.getPositions()
-    } catch (error) {
-      console.error('加载职位列表失败:', error)
+    } catch (_error) {
+      console.error('加载职位列表失败:', _error)
     }
   }
 
   const checkUsername = async () => {
-    if (!formData.username || props.mode === 'edit') {return}
+    if (!formData.username || props.mode === 'edit') {
+      return
+    }
 
     try {
       const result = await userMockApi.checkUsername(formData.username)
       if (!result.available) {
         ElMessage.warning(t('userManagement.validation.usernameExists'))
       }
-    } catch (error) {
-      console.error('检查用户名失败:', error)
+    } catch (_error) {
+      console.error('检查用户名失败:', _error)
     }
   }
 
   const checkEmail = async () => {
-    if (!formData.email) {return}
+    if (!formData.email) {
+      return
+    }
 
     try {
       const result = await userMockApi.checkEmail(formData.email)
       if (!result.available && props.mode === 'create') {
         ElMessage.warning(t('userManagement.validation.emailExists'))
       }
-    } catch (error) {
-      console.error('检查邮箱失败:', error)
+    } catch (_error) {
+      console.error('检查邮箱失败:', _error)
     }
   }
 
@@ -511,7 +515,9 @@
   }
 
   const handleSubmit = async () => {
-    if (!formRef.value) {return}
+    if (!formRef.value) {
+      return
+    }
 
     try {
       await formRef.value.validate()
@@ -532,11 +538,11 @@
 
       emit('success')
       handleClose()
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(
         props.mode === 'create' ? t('userManagement.createError') : t('userManagement.updateError')
       )
-      console.error('提交表单失败:', error)
+      console.error('提交表单失败:', _error)
     } finally {
       submitting.value = false
     }

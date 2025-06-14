@@ -161,7 +161,7 @@ router.beforeEach(async (to, _from, next) => {
     if (!authStore.user) {
       try {
         await authStore.fetchUserInfo()
-      } catch (error) {
+      } catch (_error) {
         // 获取用户信息失败，跳转到登录页
         next('/login')
         return

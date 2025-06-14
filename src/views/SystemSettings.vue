@@ -430,8 +430,8 @@
   const loadSystemInfo = async () => {
     try {
       systemInfo.value = await systemApi.getInfo()
-    } catch (error) {
-      console.error('加载系统信息失败:', error)
+    } catch (_error) {
+      console.error('加载系统信息失败:', _error)
     }
   }
 
@@ -445,24 +445,24 @@
 
         if (group === 'basic') {
           if (key in basicConfig) {
-            (basicConfig as any)[key] = value
+            ;(basicConfig as any)[key] = value
           }
         } else if (group === 'email') {
           if (key in emailConfig) {
-            (emailConfig as any)[key] = value
+            ;(emailConfig as any)[key] = value
           }
         } else if (group === 'security') {
           if (key in securityConfig) {
-            (securityConfig as any)[key] = value
+            ;(securityConfig as any)[key] = value
           }
         } else if (group === 'storage') {
           if (key in storageConfig) {
-            (storageConfig as any)[key] = value
+            ;(storageConfig as any)[key] = value
           }
         }
       })
-    } catch (error) {
-      console.error('加载配置失败:', error)
+    } catch (_error) {
+      console.error('加载配置失败:', _error)
     }
   }
 
@@ -499,8 +499,8 @@
 
       await configApi.update({ configs })
       ElMessage.success('配置保存成功')
-    } catch (error) {
-      console.error('保存配置失败:', error)
+    } catch (_error) {
+      console.error('保存配置失败:', _error)
       ElMessage.error('保存配置失败')
     } finally {
       saving.value = false
@@ -532,7 +532,9 @@
   }
 
   const handleTestEmail = async () => {
-    if (!emailFormRef.value) {return}
+    if (!emailFormRef.value) {
+      return
+    }
 
     try {
       await emailFormRef.value.validate()
@@ -544,8 +546,8 @@
       } else {
         ElMessage.error(result.message)
       }
-    } catch (error) {
-      console.error('邮件测试失败:', error)
+    } catch (_error) {
+      console.error('邮件测试失败:', _error)
       ElMessage.error('邮件发送测试失败')
     } finally {
       testingEmail.value = false
@@ -562,8 +564,8 @@
       } else {
         ElMessage.error(result.message)
       }
-    } catch (error) {
-      console.error('存储测试失败:', error)
+    } catch (_error) {
+      console.error('存储测试失败:', _error)
       ElMessage.error('存储连接测试失败')
     } finally {
       testingStorage.value = false

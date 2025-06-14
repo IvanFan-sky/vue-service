@@ -127,7 +127,7 @@ export const mockAuthApi = {
     const refreshToken = `refresh_${token}`
 
     // 设置当前用户（移除密码字段）
-    const { password: _, ...userWithoutPassword } = user
+    const { password: _password, ...userWithoutPassword } = user
     currentUser = userWithoutPassword
 
     // 存储Token
@@ -320,7 +320,7 @@ export const mockAuthApi = {
  */
 export const getMockUsers = () => {
   return mockUsers.map(user => {
-    const { password, ...userWithoutPassword } = user
+    const { password: _password, ...userWithoutPassword } = user
     return userWithoutPassword
   })
 }

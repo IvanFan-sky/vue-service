@@ -168,7 +168,7 @@
 <script setup lang="ts">
   import { ref, computed } from 'vue'
   import { ElMessage, type UploadInstance, type UploadFile } from 'element-plus'
-  import { Download, UploadFilled, Document } from '@element-plus/icons-vue'
+  import { Download, UploadFilled } from '@element-plus/icons-vue'
   import { useI18n } from '@/composables/useI18n'
   import { userMockApi } from '@/api/mock/userMock'
   import type { UserImportResult } from '@/types/user'
@@ -200,9 +200,13 @@
     set: value => emit('update:visible', value)
   })
 
-  const canNextStep = computed(() => {
-    if (currentStep.value === 0) {return true}
-    if (currentStep.value === 1) {return selectedFile.value !== null}
+  const _canNextStep = computed(() => {
+    if (currentStep.value === 0) {
+      return true
+    }
+    if (currentStep.value === 1) {
+      return selectedFile.value !== null
+    }
     return false
   })
 
@@ -216,7 +220,7 @@
       setTimeout(() => {
         ElMessage.success(t('userManagement.import.downloadTemplateSuccess'))
       }, 1000)
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(t('userManagement.import.downloadTemplateError'))
     }
   }
@@ -245,7 +249,9 @@
   }
 
   const handleImport = async () => {
-    if (!selectedFile.value) {return}
+    if (!selectedFile.value) {
+      return
+    }
 
     try {
       importing.value = true
@@ -255,15 +261,15 @@
       if (importResult.value.successCount > 0) {
         emit('success')
       }
-    } catch (error) {
+    } catch (_error) {
       ElMessage.error(t('userManagement.import.importError'))
-      console.error('导入用户失败:', error)
+      console.error('导入用户失败:', _error)
     } finally {
       importing.value = false
     }
   }
 
-  const handleNextStep = async () => {
+  const handleNext = async () => {
     if (currentStep.value === 0) {
       currentStep.value = 1
     } else if (currentStep.value === 1) {
@@ -271,7 +277,7 @@
     }
   }
 
-  const handlePrevStep = () => {
+  const handlePrevious = () => {
     if (currentStep.value > 0) {
       currentStep.value--
     }

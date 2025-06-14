@@ -32,8 +32,8 @@ export const useAuthStore = defineStore('auth', () => {
     if (savedUser) {
       try {
         user.value = JSON.parse(savedUser)
-      } catch (error) {
-        console.error('解析用户信息失败:', error)
+      } catch (_error) {
+        console.error('解析用户信息失败:', _error)
         // 清除无效的用户信息
         localStorage.removeItem('user')
         localStorage.removeItem('user_info')
@@ -61,7 +61,7 @@ export const useAuthStore = defineStore('auth', () => {
       } else {
         return Promise.reject(new Error(response.message))
       }
-    } catch (error) {
+    } catch (_error) {
       return Promise.reject(error)
     } finally {
       loading.value = false
@@ -70,15 +70,17 @@ export const useAuthStore = defineStore('auth', () => {
 
   // 获取用户信息
   const fetchUserInfo = async () => {
-    if (!token.value) {return}
+    if (!token.value) {
+      return
+    }
 
     try {
       const response = await authApi.getUserInfo()
       if (response.code === 200 && response.data) {
         user.value = response.data
       }
-    } catch (error) {
-      console.error('获取用户信息失败:', error)
+    } catch (_error) {
+      console.error('获取用户信息失败:', _error)
       logout()
     }
   }
@@ -87,8 +89,8 @@ export const useAuthStore = defineStore('auth', () => {
   const logout = async () => {
     try {
       await authApi.logout()
-    } catch (error) {
-      console.error('登出失败:', error)
+    } catch (_error) {
+      console.error('登出失败:', _error)
     } finally {
       // 清除所有认证相关状态
       token.value = ''
