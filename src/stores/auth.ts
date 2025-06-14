@@ -70,7 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   // 获取用户信息
   const fetchUserInfo = async () => {
-    if (!token.value) return
+    if (!token.value) {return}
 
     try {
       const response = await authApi.getUserInfo()

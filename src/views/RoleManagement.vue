@@ -278,7 +278,7 @@
           :default-checked-keys="checkedKeys"
           class="permission-tree"
         >
-          <template #default="{ node, data }">
+          <template #default="{ data }">
             <div class="tree-node">
               <el-icon v-if="data.type === 'menu'"><Menu /></el-icon>
               <el-icon v-else-if="data.type === 'button'"><Operation /></el-icon>
@@ -303,7 +303,7 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, reactive, onMounted, computed } from 'vue'
+  import { ref, reactive, onMounted } from 'vue'
   import { ElMessage, ElMessageBox } from 'element-plus'
   import {
     Plus,
@@ -325,7 +325,6 @@
     CreateRoleRequest,
     UpdateRoleRequest,
     RoleStatistics,
-    Permission,
     PermissionTreeNode
   } from '@/types/role'
   import type { FormInstance, FormRules } from 'element-plus'
@@ -546,7 +545,7 @@
   }
 
   const handleSubmit = async () => {
-    if (!formRef.value) return
+    if (!formRef.value) {return}
 
     try {
       await formRef.value.validate()
@@ -594,7 +593,7 @@
     }
   }
 
-  const handleViewUsers = (role: Role) => {
+  const handleViewUsers = () => {
     // 跳转到用户管理页面，并筛选该角色的用户
     ElMessage.info('跳转到用户管理页面功能待实现')
   }

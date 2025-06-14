@@ -272,7 +272,7 @@
 
 <script setup lang="ts">
   import { ref, reactive, computed, onMounted } from 'vue'
-  import { ElMessage, ElMessageBox } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import { UserFilled, Camera } from '@element-plus/icons-vue'
   import { useAuthStore } from '@/stores/auth'
   import { useTheme } from '@/composables/useTheme'
@@ -414,7 +414,7 @@
    * 工具函数
    */
   const formatDate = (dateStr?: string) => {
-    if (!dateStr) return '暂无'
+    if (!dateStr) {return '暂无'}
     return new Date(dateStr).toLocaleString('zh-CN')
   }
 
@@ -455,7 +455,7 @@
   }
 
   const handleSave = async () => {
-    if (!formRef.value) return
+    if (!formRef.value) {return}
 
     try {
       await formRef.value.validate()
@@ -490,7 +490,7 @@
     const target = event.target as HTMLInputElement
     const file = target.files?.[0]
 
-    if (!file) return
+    if (!file) {return}
 
     // 验证文件类型
     if (!file.type.startsWith('image/')) {
@@ -511,7 +511,7 @@
       formData.append('avatar', file)
 
       // 上传头像
-      const response = await apiClient.post('/api/users/avatar', formData, {
+      await apiClient.post('/api/users/avatar', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -531,7 +531,7 @@
   }
 
   const handlePasswordChange = async () => {
-    if (!passwordFormRef.value) return
+    if (!passwordFormRef.value) {return}
 
     try {
       await passwordFormRef.value.validate()

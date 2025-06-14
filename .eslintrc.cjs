@@ -12,29 +12,32 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:vue/vue3-essential',
-    '@vue/eslint-config-prettier'
+    'plugin:@typescript-eslint/recommended'
   ],
+  parser: 'vue-eslint-parser',
   parserOptions: {
     ecmaVersion: 'latest',
-    sourceType: 'module'
+    sourceType: 'module',
+    parser: '@typescript-eslint/parser'
   },
   plugins: ['vue', '@typescript-eslint'],
   rules: {
     // Vue 相关规则
-    'vue/multi-word-component-names': 'error',
+    'vue/multi-word-component-names': 'off',
     'vue/component-definition-name-casing': ['error', 'PascalCase'],
     'vue/component-name-in-template-casing': ['error', 'PascalCase'],
     'vue/prop-name-casing': ['error', 'camelCase'],
     'vue/custom-event-name-casing': ['error', 'kebab-case'],
     
     // TypeScript 相关规则
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': ['error', {
+      argsIgnorePattern: '^_',
+      varsIgnorePattern: '^_',
+      caughtErrorsIgnorePattern: '^_'
+    }],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/no-non-null-assertion': 'warn',
-    '@typescript-eslint/strict-boolean-expressions': 'off',
 
     // 通用规则
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

@@ -6,7 +6,7 @@
  * @version 1.0.0
  */
 
-import { faker } from '@faker-js/faker'
+// import { faker } from '@faker-js/faker'
 import type { 
   Role, 
   RoleListQuery,
@@ -56,7 +56,7 @@ const mockPermissions: Permission[] = [
 /**
  * 角色数据
  */
-let mockRoles: Role[] = [
+const mockRoles: Role[] = [
   {
     id: 1,
     code: 'admin',
@@ -172,10 +172,10 @@ export const roleMockApi = {
     // 关键词搜索
     if (params.keyword) {
       const keyword = params.keyword.toLowerCase()
-      filteredRoles = filteredRoles.filter(role => 
+      filteredRoles = filteredRoles.filter(role =>
         role.name.toLowerCase().includes(keyword) ||
         role.code.toLowerCase().includes(keyword) ||
-        (role.description && role.description.toLowerCase().includes(keyword))
+        role.description?.toLowerCase().includes(keyword)
       )
     }
     

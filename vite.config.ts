@@ -23,13 +23,13 @@ export default defineConfig({
       deleteOriginFile: false,
     }),
     // Bundle 分析器（仅在分析模式下启用）
-    process.env.ANALYZE && visualizer({
+    ...(process.env.ANALYZE ? [visualizer({
       filename: 'dist/stats.html',
       open: true,
       gzipSize: true,
       brotliSize: true,
-    }),
-  ].filter(Boolean),
+    })] : []),
+  ],
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),

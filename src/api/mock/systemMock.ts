@@ -18,7 +18,7 @@ import type {
   EmailConfig,
   SmsConfig,
   StorageConfig,
-  SecurityConfig
+  // SecurityConfig
 } from '@/types/system'
 
 /**
@@ -55,7 +55,7 @@ const mockSystemInfo: SystemInfo = {
 /**
  * 系统配置数据
  */
-let mockConfigs: SystemConfig[] = [
+const mockConfigs: SystemConfig[] = [
   // 基本设置
   { id: 1, key: 'siteTitle', value: 'Vue Service', name: '网站标题', description: '网站的标题', type: 'string', group: 'basic', isSystem: false, enabled: true, sort: 1, createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
   { id: 2, key: 'siteDescription', value: 'Vue3 + TypeScript 前端管理系统', name: '网站描述', description: '网站的描述信息', type: 'string', group: 'basic', isSystem: false, enabled: true, sort: 2, createdAt: '2024-01-01T00:00:00Z', updatedAt: '2024-01-01T00:00:00Z' },
@@ -105,7 +105,7 @@ function generateSystemLogs(count: number): SystemLog[] {
     title: faker.helpers.arrayElement(logTitles),
     content: faker.lorem.sentence(),
     userId: Math.random() > 0.3 ? faker.number.int({ min: 1, max: 100 }) : undefined,
-    username: Math.random() > 0.3 ? faker.internet.userName() : undefined,
+    username: Math.random() > 0.3 ? faker.internet.displayName() : undefined,
     ip: faker.internet.ip(),
     userAgent: faker.internet.userAgent(),
     createdAt: faker.date.recent({ days: 30 }).toISOString()
@@ -320,10 +320,10 @@ export const logMockApi = {
     // 关键词搜索
     if (params.keyword) {
       const keyword = params.keyword.toLowerCase()
-      filteredLogs = filteredLogs.filter(log => 
+      filteredLogs = filteredLogs.filter(log =>
         log.title.toLowerCase().includes(keyword) ||
         log.content.toLowerCase().includes(keyword) ||
-        (log.username && log.username.toLowerCase().includes(keyword))
+        log.username?.toLowerCase().includes(keyword)
       )
     }
     

@@ -152,7 +152,7 @@ function generateUserList(count: number): User[] {
 }
 
 // 生成模拟用户数据（500个用户）
-let mockUsers: User[] = generateUserList(500)
+const mockUsers: User[] = generateUserList(500)
 
 /**
  * 用户模拟API

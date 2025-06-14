@@ -201,8 +201,8 @@
   })
 
   const canNextStep = computed(() => {
-    if (currentStep.value === 0) return true
-    if (currentStep.value === 1) return selectedFile.value !== null
+    if (currentStep.value === 0) {return true}
+    if (currentStep.value === 1) {return selectedFile.value !== null}
     return false
   })
 
@@ -245,7 +245,7 @@
   }
 
   const handleImport = async () => {
-    if (!selectedFile.value) return
+    if (!selectedFile.value) {return}
 
     try {
       importing.value = true

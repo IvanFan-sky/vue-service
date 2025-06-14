@@ -64,7 +64,7 @@ class ErrorHandler {
           message = '请求的资源不存在'
           break
 
-        case HTTP_STATUS.TOO_MANY_REQUESTS:
+        case 429: // TOO_MANY_REQUESTS
           message = '请求过于频繁，请稍后重试'
           break
 
@@ -344,6 +344,13 @@ export class ApiClient {
    */
   delete<T = any>(url: string, config?: RequestConfig): Promise<ApiResponse<T>> {
     return this.request<T>({ ...config, method: 'DELETE', url })
+  }
+
+  /**
+   * PATCH 请求
+   */
+  patch<T = any>(url: string, data?: any, config?: RequestConfig): Promise<ApiResponse<T>> {
+    return this.request<T>({ ...config, method: 'PATCH', url, data })
   }
 
   /**

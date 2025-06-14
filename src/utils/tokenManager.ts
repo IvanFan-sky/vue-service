@@ -96,7 +96,7 @@ export class TokenManager {
    */
   private setupTokenRefresh(): void {
     const token = this.authStore.token
-    if (!token) return
+    if (!token) {return}
 
     try {
       const payload = this.parseJWT(token)

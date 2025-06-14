@@ -178,7 +178,7 @@
    * 格式化时间
    */
   const formatTime = (time?: string): string => {
-    if (!time) return '暂无记录'
+    if (!time) {return '暂无记录'}
 
     try {
       const date = new Date(time)

@@ -39,8 +39,10 @@ const realRoleApi = {
    * @param params 查询参数
    * @returns 角色列表数据
    */
-  getList: (params: RoleListQuery): Promise<RoleListResult> =>
-    apiClient.get('/api/roles', { params }),
+  getList: async (params: RoleListQuery): Promise<RoleListResult> => {
+    const response = await apiClient.get('/api/roles', { params })
+    return response.data
+  },
 
   /**
    * 获取角色详情

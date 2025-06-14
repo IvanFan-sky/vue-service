@@ -419,7 +419,7 @@
   }
 
   const checkUsername = async () => {
-    if (!formData.username || props.mode === 'edit') return
+    if (!formData.username || props.mode === 'edit') {return}
 
     try {
       const result = await userMockApi.checkUsername(formData.username)
@@ -432,7 +432,7 @@
   }
 
   const checkEmail = async () => {
-    if (!formData.email) return
+    if (!formData.email) {return}
 
     try {
       const result = await userMockApi.checkEmail(formData.email)
@@ -511,7 +511,7 @@
   }
 
   const handleSubmit = async () => {
-    if (!formRef.value) return
+    if (!formRef.value) {return}
 
     try {
       await formRef.value.validate()
