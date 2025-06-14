@@ -2,62 +2,76 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import type { RouteMeta } from '@/types'
+import { routeLazyLoad, smartPreload } from '@/utils/lazyLoad'
 
 // 路由配置
 const routes: RouteRecordRaw[] = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "login" */ '@/views/Login.vue'),
-    meta: { 
+    component: routeLazyLoad('@/views/Login.vue', 'login', {
+      delay: 100,
+      preload: true
+    }),
+    meta: {
       title: '登录',
       requireAuth: false,
-      hidden: true 
+      hidden: true
     } as RouteMeta,
   },
   {
     path: '/',
     name: 'Home',
     redirect: '/dashboard',
-    component: () => import(/* webpackChunkName: "layout" */ '@/components/Layout/BasicLayout.vue'),
-    meta: { 
+    component: routeLazyLoad('@/components/Layout/BasicLayout.vue', 'layout', {
+      delay: 50,
+      preload: true
+    }),
+    meta: {
       title: '首页',
-      requireAuth: true 
+      requireAuth: true
     } as RouteMeta,
     children: [
       {
         path: '/dashboard',
         name: 'Dashboard',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue'),
-        meta: { 
+        component: routeLazyLoad('@/views/Dashboard.vue', 'dashboard', {
+          delay: 100,
+          preload: true
+        }),
+        meta: {
           title: '仪表盘',
           icon: 'Dashboard',
-          requireAuth: true 
+          requireAuth: true
         } as RouteMeta,
-              },
-        {
-          path: '/user/list',
-          name: 'UserManagement',
-          component: () => import(/* webpackChunkName: "user-management" */ '@/views/UserManagement.vue'),
-          meta: { 
-            title: '用户列表',
-            icon: 'UserFilled',
-            requireAuth: true,
-            breadcrumb: [
-              { title: '用户管理', path: '/user' },
-              { title: '用户列表', path: '/user/list' }
-            ]
-          } as RouteMeta,
-        }
+      },
+      {
+        path: '/user/list',
+        name: 'UserManagement',
+        component: routeLazyLoad('@/views/UserManagement.vue', 'user-management', {
+          delay: 150
+        }),
+        meta: {
+          title: '用户列表',
+          icon: 'UserFilled',
+          requireAuth: true,
+          breadcrumb: [
+            { title: '用户管理', path: '/user' },
+            { title: '用户列表', path: '/user/list' }
+          ]
+        } as RouteMeta,
+      }
     ],
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import(/* webpackChunkName: "error" */ '@/views/404.vue'),
-    meta: { 
+    component: routeLazyLoad('@/views/404.vue', 'error', {
+      delay: 100
+    }),
+    meta: {
       title: '页面不存在',
-      hidden: true 
+      hidden: true
     } as RouteMeta,
   },
 ]
@@ -117,8 +131,21 @@ router.beforeEach(async (to, _from, next) => {
 })
 
 // 路由后置守卫
-router.afterEach(() => {
-  // 可以在这里添加页面加载完成后的逻辑
+router.afterEach((to) => {
+  // 智能预加载相关路由
+  const routePreloadMap: Record<string, string[]> = {
+    '/login': ['/dashboard'],
+    '/dashboard': ['/user/list'],
+    '/user/list': ['/dashboard']
+  }
+
+  const preloadRoutes = routePreloadMap[to.path]
+  if (preloadRoutes) {
+    // 延迟预加载，避免影响当前页面性能
+    setTimeout(() => {
+      smartPreload(to.path, routePreloadMap)
+    }, 1000)
+  }
 })
 
 export default router 
