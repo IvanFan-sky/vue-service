@@ -133,6 +133,9 @@ export const routeLazyLoad = (
     '@/views/Login.vue': () => import('@/views/Login.vue'),
     '@/views/Dashboard.vue': () => import('@/views/Dashboard.vue'),
     '@/views/UserManagement.vue': () => import('@/views/UserManagement.vue'),
+    '@/views/UserProfile.vue': () => import('@/views/UserProfile.vue'),
+    '@/views/RoleManagement.vue': () => import('@/views/RoleManagement.vue'),
+    '@/views/SystemSettings.vue': () => import('@/views/SystemSettings.vue'),
     '@/views/404.vue': () => import('@/views/404.vue'),
     '@/components/Layout/BasicLayout.vue': () => import('@/components/Layout/BasicLayout.vue'),
   }

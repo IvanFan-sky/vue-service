@@ -60,6 +60,54 @@ const routes: RouteRecordRaw[] = [
             { title: '用户列表', path: '/user/list' }
           ]
         } as RouteMeta,
+      },
+      {
+        path: '/user/profile',
+        name: 'UserProfile',
+        component: routeLazyLoad('@/views/UserProfile.vue', 'user-profile', {
+          delay: 150
+        }),
+        meta: {
+          title: '个人信息',
+          icon: 'User',
+          requireAuth: true,
+          breadcrumb: [
+            { title: '用户管理', path: '/user' },
+            { title: '个人信息', path: '/user/profile' }
+          ]
+        } as RouteMeta,
+      },
+      {
+        path: '/system/roles',
+        name: 'RoleManagement',
+        component: routeLazyLoad('@/views/RoleManagement.vue', 'role-management', {
+          delay: 150
+        }),
+        meta: {
+          title: '角色管理',
+          icon: 'UserFilled',
+          requireAuth: true,
+          breadcrumb: [
+            { title: '系统管理', path: '/system' },
+            { title: '角色管理', path: '/system/roles' }
+          ]
+        } as RouteMeta,
+      },
+      {
+        path: '/system/settings',
+        name: 'SystemSettings',
+        component: routeLazyLoad('@/views/SystemSettings.vue', 'system-settings', {
+          delay: 150
+        }),
+        meta: {
+          title: '系统设置',
+          icon: 'Setting',
+          requireAuth: true,
+          breadcrumb: [
+            { title: '系统管理', path: '/system' },
+            { title: '系统设置', path: '/system/settings' }
+          ]
+        } as RouteMeta,
       }
     ],
   },
