@@ -6,7 +6,7 @@
  * @version 1.0.0
  */
 
-import type { UserRole } from './index'
+import type { UserRole } from '@/types'
 
 /**
  * 菜单项接口

@@ -445,19 +445,19 @@
 
         if (group === 'basic') {
           if (key in basicConfig) {
-            (basicConfig as any)[key] = value
+            ;(basicConfig as any)[key] = value
           }
         } else if (group === 'email') {
           if (key in emailConfig) {
-            (emailConfig as any)[key] = value
+            ;(emailConfig as any)[key] = value
           }
         } else if (group === 'security') {
           if (key in securityConfig) {
-            (securityConfig as any)[key] = value
+            ;(securityConfig as any)[key] = value
           }
         } else if (group === 'storage') {
           if (key in storageConfig) {
-            (storageConfig as any)[key] = value
+            ;(storageConfig as any)[key] = value
           }
         }
       })
