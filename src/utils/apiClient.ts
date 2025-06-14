@@ -15,7 +15,7 @@ import axios, {
 import { ElMessage } from 'element-plus'
 import type { ApiResponse } from '@/types'
 import { API_CONFIG, STORAGE_KEYS, HTTP_STATUS } from '@/constants'
-import { getTokenManager } from './tokenManager'
+import { getTokenManager } from '@/utils/tokenManager'
 
 /**
  * 请求配置接口

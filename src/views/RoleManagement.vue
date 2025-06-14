@@ -326,7 +326,7 @@
     UpdateRoleRequest,
     RoleStatistics,
     PermissionTreeNode
-  } from '@/types/role'
+  } from '../types/role'
   import type { FormInstance, FormRules } from 'element-plus'
 
   /**

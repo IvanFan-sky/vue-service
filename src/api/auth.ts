@@ -7,7 +7,7 @@
  */
 
 import { apiClient } from '@/utils/apiClient'
-import { mockAuthApi } from './mock/auth'
+import { mockAuthApi } from '@/api/mock/auth'
 import type { LoginForm, User, ApiResponse } from '@/types'
 
 /**

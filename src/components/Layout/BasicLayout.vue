@@ -36,8 +36,8 @@
 
 <script setup lang="ts">
   import { ref, onMounted } from 'vue'
-  import AppSidebar from './AppSidebar.vue'
-  import AppHeader from './AppHeader.vue'
+  import AppSidebar from '@/components/Layout/AppSidebar.vue'
+  import AppHeader from '@/components/Layout/AppHeader.vue'
   import { useTheme } from '@/composables/useTheme'
 
   /**

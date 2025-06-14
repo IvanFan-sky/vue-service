@@ -7,7 +7,7 @@
  */
 
 import type { App } from 'vue'
-import { lazyLoad, lazyLoadBg } from './lazyLoad'
+import { lazyLoad, lazyLoadBg } from '@/directives/lazyLoad'
 
 /**
  * 注册全局指令

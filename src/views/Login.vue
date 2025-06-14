@@ -134,9 +134,9 @@
 <script setup lang="ts">
   import { ref, computed, onMounted } from 'vue'
   import { useRouter } from 'vue-router'
-  import { useAuthStore } from '../stores/auth'
-  import { getApiMode } from '../api/auth'
-  import type { LoginForm } from '../types'
+  import { useAuthStore } from '@/stores/auth'
+  import { getApiMode } from '@/api/auth'
+  import type { LoginForm } from '@/types'
 
   /**
    * 路由实例

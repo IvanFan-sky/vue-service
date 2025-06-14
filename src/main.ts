@@ -7,10 +7,10 @@
  */
 
 import { createApp } from 'vue'
-import App from './App.vue'
+import App from '@/App.vue'
 
 // 导入全局样式
-import './assets/styles/index.scss'
+import '@/assets/styles/index.scss'
 
 // 导入Element Plus
 import ElementPlus from 'element-plus'
@@ -22,16 +22,16 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { createPinia } from 'pinia'
 
 // 导入路由
-import router from './router'
+import router from '@/router'
 
 // 导入主题系统
-import { useTheme } from './composables/useTheme'
+import { useTheme } from '@/composables/useTheme'
 
 // 导入认证状态管理
-import { useAuthStore } from './stores/auth'
+import { useAuthStore } from '@/stores/auth'
 
 // 导入全局指令
-import setupDirectives from './directives'
+import setupDirectives from '@/directives'
 
 /**
  * 创建Vue应用实例
